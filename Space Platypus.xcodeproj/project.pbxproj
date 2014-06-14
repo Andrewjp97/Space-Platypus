@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE74DA2B194D13FC007A1EED /* Space_PlatypusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE74DA2A194D13FC007A1EED /* Space_PlatypusTests.swift */; };
+		AE936691194D149000C30EB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE93667C194D149000C30EB3 /* AppDelegate.swift */; };
+		AE936692194D149000C30EB3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE93667D194D149000C30EB3 /* Main.storyboard */; };
+		AE936693194D149000C30EB3 /* bodyOnFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93667F194D149000C30EB3 /* bodyOnFire.sks */; };
+		AE936694194D149000C30EB3 /* CustomizeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936680194D149000C30EB3 /* CustomizeScene.swift */; };
+		AE936695194D149000C30EB3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936681194D149000C30EB3 /* GameScene.swift */; };
+		AE936696194D149000C30EB3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936682194D149000C30EB3 /* GameViewController.swift */; };
+		AE936697194D149000C30EB3 /* GetGKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = AE936684194D149000C30EB3 /* GetGKPlayer.m */; };
+		AE936698194D149000C30EB3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE936685194D149000C30EB3 /* Images.xcassets */; };
+		AE93669A194D149000C30EB3 /* MyExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE936687194D149000C30EB3 /* MyExplosion.sks */; };
+		AE93669B194D149000C30EB3 /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE936688194D149000C30EB3 /* MyParticle.sks */; };
+		AE93669C194D149000C30EB3 /* OptionsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936689194D149000C30EB3 /* OptionsScene.swift */; };
+		AE93669D194D149000C30EB3 /* smallExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668A194D149000C30EB3 /* smallExplosion.sks */; };
+		AE93669E194D149000C30EB3 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = AE93668C194D149000C30EB3 /* spark.png */; };
+		AE93669F194D149000C30EB3 /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668D194D149000C30EB3 /* spark.sks */; };
+		AE9366A0194D149000C30EB3 /* Stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668E194D149000C30EB3 /* Stars.sks */; };
+		AE9366A1194D149000C30EB3 /* tail.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668F194D149000C30EB3 /* tail.sks */; };
+		AE9366A2194D149000C30EB3 /* WelcomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936690194D149000C30EB3 /* WelcomeScene.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AE74DA25194D13FC007A1EED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE74DA06194D13FC007A1EED /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE74DA0D194D13FC007A1EED;
+			remoteInfo = "Space Platypus";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AE74DA0E194D13FC007A1EED /* Space Platypus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Space Platypus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE74DA24194D13FC007A1EED /* Space PlatypusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Space PlatypusTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE74DA29194D13FC007A1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE74DA2A194D13FC007A1EED /* Space_PlatypusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space_PlatypusTests.swift; sourceTree = "<group>"; };
+		AE93667C194D149000C30EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AE93667E194D149000C30EB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AE93667F194D149000C30EB3 /* bodyOnFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = bodyOnFire.sks; sourceTree = "<group>"; };
+		AE936680194D149000C30EB3 /* CustomizeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeScene.swift; sourceTree = "<group>"; };
+		AE936681194D149000C30EB3 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		AE936682194D149000C30EB3 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		AE936683194D149000C30EB3 /* GetGKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetGKPlayer.h; sourceTree = "<group>"; };
+		AE936684194D149000C30EB3 /* GetGKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetGKPlayer.m; sourceTree = "<group>"; };
+		AE936685194D149000C30EB3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AE936686194D149000C30EB3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE936687194D149000C30EB3 /* MyExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyExplosion.sks; sourceTree = "<group>"; };
+		AE936688194D149000C30EB3 /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
+		AE936689194D149000C30EB3 /* OptionsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsScene.swift; sourceTree = "<group>"; };
+		AE93668A194D149000C30EB3 /* smallExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = smallExplosion.sks; sourceTree = "<group>"; };
+		AE93668B194D149000C30EB3 /* Space Platypus Swift-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Space Platypus Swift-Bridging-Header.h"; sourceTree = "<group>"; };
+		AE93668C194D149000C30EB3 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		AE93668D194D149000C30EB3 /* spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = spark.sks; sourceTree = "<group>"; };
+		AE93668E194D149000C30EB3 /* Stars.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Stars.sks; sourceTree = "<group>"; };
+		AE93668F194D149000C30EB3 /* tail.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = tail.sks; sourceTree = "<group>"; };
+		AE936690194D149000C30EB3 /* WelcomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScene.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE74DA0B194D13FC007A1EED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE74DA21194D13FC007A1EED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE74DA05194D13FC007A1EED = {
+			isa = PBXGroup;
+			children = (
+				AE93667B194D149000C30EB3 /* Space Platypus */,
+				AE74DA27194D13FC007A1EED /* Space PlatypusTests */,
+				AE74DA0F194D13FC007A1EED /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AE74DA0F194D13FC007A1EED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE74DA0E194D13FC007A1EED /* Space Platypus.app */,
+				AE74DA24194D13FC007A1EED /* Space PlatypusTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE74DA27194D13FC007A1EED /* Space PlatypusTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE74DA2A194D13FC007A1EED /* Space_PlatypusTests.swift */,
+				AE74DA28194D13FC007A1EED /* Supporting Files */,
+			);
+			path = "Space PlatypusTests";
+			sourceTree = "<group>";
+		};
+		AE74DA28194D13FC007A1EED /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AE74DA29194D13FC007A1EED /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AE93667B194D149000C30EB3 /* Space Platypus */ = {
+			isa = PBXGroup;
+			children = (
+				AE93667C194D149000C30EB3 /* AppDelegate.swift */,
+				AE93667D194D149000C30EB3 /* Main.storyboard */,
+				AE93667F194D149000C30EB3 /* bodyOnFire.sks */,
+				AE936680194D149000C30EB3 /* CustomizeScene.swift */,
+				AE936681194D149000C30EB3 /* GameScene.swift */,
+				AE936682194D149000C30EB3 /* GameViewController.swift */,
+				AE936683194D149000C30EB3 /* GetGKPlayer.h */,
+				AE936684194D149000C30EB3 /* GetGKPlayer.m */,
+				AE936685194D149000C30EB3 /* Images.xcassets */,
+				AE936686194D149000C30EB3 /* Info.plist */,
+				AE936687194D149000C30EB3 /* MyExplosion.sks */,
+				AE936688194D149000C30EB3 /* MyParticle.sks */,
+				AE936689194D149000C30EB3 /* OptionsScene.swift */,
+				AE93668A194D149000C30EB3 /* smallExplosion.sks */,
+				AE93668B194D149000C30EB3 /* Space Platypus Swift-Bridging-Header.h */,
+				AE93668C194D149000C30EB3 /* spark.png */,
+				AE93668D194D149000C30EB3 /* spark.sks */,
+				AE93668E194D149000C30EB3 /* Stars.sks */,
+				AE93668F194D149000C30EB3 /* tail.sks */,
+				AE936690194D149000C30EB3 /* WelcomeScene.swift */,
+			);
+			path = "Space Platypus";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE74DA0D194D13FC007A1EED /* Space Platypus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE74DA2E194D13FC007A1EED /* Build configuration list for PBXNativeTarget "Space Platypus" */;
+			buildPhases = (
+				AE74DA0A194D13FC007A1EED /* Sources */,
+				AE74DA0B194D13FC007A1EED /* Frameworks */,
+				AE74DA0C194D13FC007A1EED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Space Platypus";
+			productName = "Space Platypus";
+			productReference = AE74DA0E194D13FC007A1EED /* Space Platypus.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AE74DA23194D13FC007A1EED /* Space PlatypusTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE74DA31194D13FC007A1EED /* Build configuration list for PBXNativeTarget "Space PlatypusTests" */;
+			buildPhases = (
+				AE74DA20194D13FC007A1EED /* Sources */,
+				AE74DA21194D13FC007A1EED /* Frameworks */,
+				AE74DA22194D13FC007A1EED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE74DA26194D13FC007A1EED /* PBXTargetDependency */,
+			);
+			name = "Space PlatypusTests";
+			productName = "Space PlatypusTests";
+			productReference = AE74DA24194D13FC007A1EED /* Space PlatypusTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE74DA06194D13FC007A1EED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Karl Paterson";
+				TargetAttributes = {
+					AE74DA0D194D13FC007A1EED = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = HEFSF24EZX;
+					};
+					AE74DA23194D13FC007A1EED = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = AE74DA0D194D13FC007A1EED;
+					};
+				};
+			};
+			buildConfigurationList = AE74DA09194D13FC007A1EED /* Build configuration list for PBXProject "Space Platypus" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE74DA05194D13FC007A1EED;
+			productRefGroup = AE74DA0F194D13FC007A1EED /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE74DA0D194D13FC007A1EED /* Space Platypus */,
+				AE74DA23194D13FC007A1EED /* Space PlatypusTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE74DA0C194D13FC007A1EED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE9366A1194D149000C30EB3 /* tail.sks in Resources */,
+				AE93669F194D149000C30EB3 /* spark.sks in Resources */,
+				AE93669B194D149000C30EB3 /* MyParticle.sks in Resources */,
+				AE93669D194D149000C30EB3 /* smallExplosion.sks in Resources */,
+				AE936698194D149000C30EB3 /* Images.xcassets in Resources */,
+				AE9366A0194D149000C30EB3 /* Stars.sks in Resources */,
+				AE936693194D149000C30EB3 /* bodyOnFire.sks in Resources */,
+				AE93669E194D149000C30EB3 /* spark.png in Resources */,
+				AE936692194D149000C30EB3 /* Main.storyboard in Resources */,
+				AE93669A194D149000C30EB3 /* MyExplosion.sks in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE74DA22194D13FC007A1EED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE74DA0A194D13FC007A1EED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE9366A2194D149000C30EB3 /* WelcomeScene.swift in Sources */,
+				AE936696194D149000C30EB3 /* GameViewController.swift in Sources */,
+				AE936695194D149000C30EB3 /* GameScene.swift in Sources */,
+				AE936694194D149000C30EB3 /* CustomizeScene.swift in Sources */,
+				AE936691194D149000C30EB3 /* AppDelegate.swift in Sources */,
+				AE936697194D149000C30EB3 /* GetGKPlayer.m in Sources */,
+				AE93669C194D149000C30EB3 /* OptionsScene.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE74DA20194D13FC007A1EED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE74DA2B194D13FC007A1EED /* Space_PlatypusTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE74DA26194D13FC007A1EED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE74DA0D194D13FC007A1EED /* Space Platypus */;
+			targetProxy = AE74DA25194D13FC007A1EED /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE93667D194D149000C30EB3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE93667E194D149000C30EB3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AE74DA2C194D13FC007A1EED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				METAL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE74DA2D194D13FC007A1EED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				METAL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE74DA2F194D13FC007A1EED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Space Platypus/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Space Platypus/Space Platypus Swift-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		AE74DA30194D13FC007A1EED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Space Platypus/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Space Platypus/Space Platypus Swift-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		AE74DA32194D13FC007A1EED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Space Platypus.app/Space Platypus";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Space PlatypusTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		AE74DA33194D13FC007A1EED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Space Platypus.app/Space Platypus";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Space PlatypusTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE74DA09194D13FC007A1EED /* Build configuration list for PBXProject "Space Platypus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE74DA2C194D13FC007A1EED /* Debug */,
+				AE74DA2D194D13FC007A1EED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE74DA2E194D13FC007A1EED /* Build configuration list for PBXNativeTarget "Space Platypus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE74DA2F194D13FC007A1EED /* Debug */,
+				AE74DA30194D13FC007A1EED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE74DA31194D13FC007A1EED /* Build configuration list for PBXNativeTarget "Space PlatypusTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE74DA32194D13FC007A1EED /* Debug */,
+				AE74DA33194D13FC007A1EED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE74DA06194D13FC007A1EED /* Project object */;
+}
