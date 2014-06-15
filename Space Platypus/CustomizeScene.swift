@@ -22,13 +22,18 @@ class CustomizeScene: SKScene {
     init(size: CGSize, platypusTypes: kPlatypusColor[], parent: CustomizeScene? = nil) {
 
 
-
+        // Call Superclass initializer
         super.init(size: size)
 
+
+        // If the parent optional has a value, unwrap it and assign it to self
         if let sceneParent = parent {
             self.parentScene = parent!
         }
 
+
+        // If there are more than 6 types of platypus to display, count out the first six and keep them
+        // then send the rest to a new instance and call it our child.  (Like a doubly linked list data structure)
         if platypusTypes.count > 6
         {
             var subarray: kPlatypusColor[] = []
