@@ -17,6 +17,7 @@ class CustomizeScene: SKScene {
     var child: CustomizeScene?
     var parentScene: CustomizeScene?
     var platypusTypes: kPlatypusColor[] = []
+    var contentCreated: Bool = false
 
 
     init(size: CGSize, platypusTypes: kPlatypusColor[], parent: CustomizeScene? = nil) {
@@ -57,24 +58,24 @@ class CustomizeScene: SKScene {
     }
 
     override func didMoveToView(view: SKView!) {
+        if !self.contentCreated {
+            self.layoutPlatapi()
+            self.backgroundColor = SKColor.blackColor()
+            self.makeStars()
 
-        self.layoutPlatapi()
-        self.backgroundColor = SKColor.blackColor()
-        self.makeStars()
-
-        if self.child {
-            let rightArrow = SKSpriteNode(imageNamed: "rightArrow")
-            rightArrow.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
-            rightArrow.name = "rightArrow"
-            self.addChild(rightArrow)
+            if self.child {
+                let rightArrow = SKSpriteNode(imageNamed: "rightArrow")
+                rightArrow.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
+                rightArrow.name = "rightArrow"
+                self.addChild(rightArrow)
+            }
+            if self.parentScene {
+                let leftArrow = SKSpriteNode(imageNamed: "leftArrow")
+                leftArrow.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
+                leftArrow.name = "leftArrow"
+                self.addChild(leftArrow)
         }
-        if self.parentScene {
-            let leftArrow = SKSpriteNode(imageNamed: "leftArrow")
-            leftArrow.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
-            leftArrow.name = "leftArrow"
-            self.addChild(leftArrow)
         }
-
     }
 
     func layoutPlatapi() {
@@ -118,7 +119,7 @@ class CustomizeScene: SKScene {
 
         let leftArrowBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
             if node.containsPoint(touches.anyObject().locationInNode(self)) {
-                let transition = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 1.0)
+                let transition = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 0.25)
                 self.scene.view.presentScene(self.parentScene, transition: transition)
                 return
             }
@@ -128,7 +129,7 @@ class CustomizeScene: SKScene {
 
         let rightArrowBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
             if node.containsPoint(touches.anyObject().locationInNode(self)) {
-                let transition = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 1.0)
+                let transition = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 0.25)
                 self.scene.view.presentScene(self.child, transition: transition)
                 return
             }
