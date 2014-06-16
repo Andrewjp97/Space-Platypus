@@ -65,11 +65,13 @@ class CustomizeScene: SKScene {
         if self.child {
             let rightArrow = SKSpriteNode(imageNamed: "rightArrow")
             rightArrow.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
+            rightArrow.name = "rightArrow"
             self.addChild(rightArrow)
         }
         if self.parentScene {
             let leftArrow = SKSpriteNode(imageNamed: "leftArrow")
             leftArrow.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
+            leftArrow.name = "leftArrow"
             self.addChild(leftArrow)
         }
 
