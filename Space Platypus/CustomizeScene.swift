@@ -114,6 +114,24 @@ class CustomizeScene: SKScene {
             }
             })
         self.enumerateChildNodesWithName("PlatypusBody", usingBlock: block)
+
+        let leftArrowBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+                let transition = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 1.0)
+                self.scene.view.presentScene(self.parentScene, transition: transition)
+            }
+        })
+
+        self.enumerateChildNodesWithName("leftArrow", usingBlock: leftArrowBlock)
+
+        let rightArrowBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+                let transition = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 1.0)
+                self.scene.view.presentScene(self.child, transition: transition)
+            }
+        })
+
+        self.enumerateChildNodesWithName("rightArrow", usingBlock: rightArrowBlock)
     }
 
     func highlightNode(node: PlatypusSprite) {
