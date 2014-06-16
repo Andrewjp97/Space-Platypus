@@ -162,7 +162,7 @@ class CustomizeScene: SKScene {
     func unhighlightAnyNodes(sendToChild: Bool) {
         let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in node.removeFromParent() })
         self.enumerateChildNodesWithName("selection", usingBlock: block)
-        // Recursion: if this message came from a parent, we want to send it down the chaing of children
+        // Recursion: if this message came from a parent, we want to send it down the chain of children
         if sendToChild {
             if let node = self.child {
                 node.unhighlightAnyNodes(true)
