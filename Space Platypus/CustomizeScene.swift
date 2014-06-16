@@ -103,6 +103,14 @@ class CustomizeScene: SKScene {
             index++
         }
 
+        let node = SKLabelNode(fontNamed: "Helvetica")
+        node.text = "Back"
+        node.name = "back"
+        node.fontColor = SKColor.whiteColor()
+        node.fontSize = 24
+        node.position = CGPointMake(10 + (0.5 * node.frame.size.width), CGRectGetMaxY(self.frame) - 20 - (0.5 * node.frame.size.height))
+        self.addChild(node)
+
     }
 
     override func update(currentTime: NSTimeInterval) {
@@ -137,6 +145,15 @@ class CustomizeScene: SKScene {
         })
 
         self.enumerateChildNodesWithName("rightArrow", usingBlock: rightArrowBlock)
+
+        let backButtonBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+                let transition = SKTransition.doorsCloseVerticalWithDuration(0.5)
+                self.scene.view.presentScene(WelcomeScene(size: self.size), transition: transition)
+            }
+        })
+
+        self.enumerateChildNodesWithName("back", usingBlock: backButtonBlock)
     }
 
     func highlightNode(node: PlatypusSprite) {

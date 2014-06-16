@@ -10,6 +10,8 @@ import UIKit
 import SpriteKit
 import GameKit
 
+
+// Simple subclass of SKSpriteNode for the platypus sprites in the customize menus: Not used elsewhere
 class PlatypusSprite: SKSpriteNode {
     var type: kPlatypusColor?
 }

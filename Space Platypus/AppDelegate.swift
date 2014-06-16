@@ -105,12 +105,7 @@ var motionEnabled: Bool = false {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
-
-
     var highScore: Int
-
     
 
     init() {
