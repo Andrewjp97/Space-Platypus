@@ -75,6 +75,7 @@ class CustomizeScene: SKScene {
                 leftArrow.name = "leftArrow"
                 self.addChild(leftArrow)
         }
+            self.contentCreated = true
         }
     }
 
@@ -142,6 +143,12 @@ class CustomizeScene: SKScene {
         if let color = node.type {
             platypusColor = color
         }
+        if let node = self.child {
+            node.unhighlightAnyNodes(true)
+        }
+        if let node = self.parentScene {
+            node.unhighlightAnyNodes(false)
+        }
         let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({ (node, stop) in node.removeFromParent() })
         self.enumerateChildNodesWithName("selection", usingBlock: block)
         let selection = SKSpriteNode(imageNamed: "BackgroundSelected")
@@ -150,6 +157,23 @@ class CustomizeScene: SKScene {
         selection.position.y = selection.position.y - 20
         selection.zPosition = node.zPosition - 1
         self.addChild(selection)
+    }
+
+    func unhighlightAnyNodes(sendToChild: Bool) {
+        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in node.removeFromParent() })
+        self.enumerateChildNodesWithName("selection", usingBlock: block)
+        // Recursion: if this message came from a parent, we want to send it down the chaing of children
+        if sendToChild {
+            if let node = self.child {
+                node.unhighlightAnyNodes(true)
+            }
+        }   // Otherwise we want to send it up the chain of parents
+        else {
+            if let node = self.parentScene {
+                node.unhighlightAnyNodes(false)
+            }
+        }
+
     }
 
     func makeStars() {
