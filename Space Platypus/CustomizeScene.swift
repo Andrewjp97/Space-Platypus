@@ -111,6 +111,7 @@ class CustomizeScene: SKScene {
 
             if node.containsPoint(touches.anyObject().locationInNode(self)) {
                 self.highlightNode(node as PlatypusSprite)
+                return
             }
             })
         self.enumerateChildNodesWithName("PlatypusBody", usingBlock: block)
@@ -119,6 +120,7 @@ class CustomizeScene: SKScene {
             if node.containsPoint(touches.anyObject().locationInNode(self)) {
                 let transition = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 1.0)
                 self.scene.view.presentScene(self.parentScene, transition: transition)
+                return
             }
         })
 
@@ -128,6 +130,7 @@ class CustomizeScene: SKScene {
             if node.containsPoint(touches.anyObject().locationInNode(self)) {
                 let transition = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 1.0)
                 self.scene.view.presentScene(self.child, transition: transition)
+                return
             }
         })
 
