@@ -15,7 +15,7 @@ protocol TimerDelegate {
     func timerDidChangeTime(value: Int, valueString: String)
 }
 
-class Timer: NSObject {
+class Timer: SKNode {
     var timeElapsed: Int = 0 {
         willSet {
             self.timeElapsedString = "\(newValue)"
@@ -28,15 +28,10 @@ class Timer: NSObject {
     /// Starts the Timer
     func start() {
         self.shouldContinue = true
-        let offset = 1.0
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(offset * Double(NSEC_PER_SEC))), DISPATCH_QUEUE_PRIORITY_HIGH, {
-            self.addTime()
-            })
-    }
-
-    /// Stops the Timer
-    func stop() {
-        self.shouldContinue = false
+        let performBlock = SKAction.runBlock({self.addTime()})
+        let delay = SKAction.waitForDuration(1.0)
+        let action = SKAction.sequence([delay, performBlock])
+        self.runAction(action)
     }
 
     func addTime() {
@@ -45,12 +40,18 @@ class Timer: NSObject {
             del.timerDidChangeTime(self.timeElapsed, valueString: self.timeElapsedString)
         }
         if self.shouldContinue {
-            let offset = 1.0
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(offset * Double(NSEC_PER_SEC))), DISPATCH_QUEUE_PRIORITY_HIGH, {
-                self.addTime()
-                })
+            let performBlock = SKAction.runBlock({self.addTime()})
+            let delay = SKAction.waitForDuration(1.0)
+            let action = SKAction.sequence([delay, performBlock])
+            self.runAction(action)
         }
     }
+
+    /// Stops the Timer
+    func stop() {
+        self.shouldContinue = false
+    }
+
 
     func clear() {
         self.timeElapsed = 0
@@ -72,7 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
     var motionManager: CMMotionManager?
     var impulseSlower = false
     var timer: Timer = Timer()
-    var timerLabel: SKLabelNode = SKLabelNode(fontNamed: "Helvetica")
+    var timerLabel: SKLabelNode
 
     enum ColliderType: UInt32 {
         case Rock = 1
@@ -84,19 +85,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     init(size: CGSize) {
 
+        self.timerLabel  = SKLabelNode(fontNamed: "Helvetica")
+        self.timerLabel.text = "0: 00"
+
         super.init(size: size)
-        self.timer.delegate = self
+
         
     }
 
     func timerDidChangeTime(value: Int, valueString: String) {
         self.seconds = value
-        self.timerLabel.text = valueString
+        let string = value % 60 < 10 ? "0\(value % 60)" : "\(value % 60)"
+        self.timerLabel.text = "\(value / 60): \(string)"
+        self.timerLabel.position = CGPointMake(10 + (0.5 * self.timerLabel.frame.size.width), self.frame.size.height - 20 - (0.5 * self.timerLabel.frame.size.height))
+        NSLog(valueString)
+        NSLog(self.timerLabel.text)
+        NSLog("\(self.timerLabel.position)")
     }
 
     override func didMoveToView(view: SKView) {
 
         if !contentCreated {
+
+            self.timer.delegate = self
+            self.addChild(self.timer)
+            self.timerLabel.zPosition = 500
+            self.backgroundColor = SKColor.blackColor()
+            self.timerLabel.fontSize = 24
+            self.timerLabel.fontColor = SKColor.whiteColor()
+            self.timerLabel.position = CGPointMake(10 + (0.5 * self.timerLabel.frame.size.width), self.frame.size.height - 20 - (0.5 * self.timerLabel.frame.size.height))
+            self.addChild(self.timerLabel)
+
 
             if motionEnabled {
                 motionManager = CMMotionManager()
@@ -159,8 +178,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         self.makePlatypus()
         self.addRocks()
         self.timer.start()
+        self.makeLifeBar()
 
 
+
+    }
+
+    func makeLifeBar() {
+
+        let node = SKSpriteNode(imageNamed: "LifeBarFull")
+        node.name = "lifeBar"
+        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            node.position = CGPointMake(self.view.frame.size.width - 70, self.view.frame.size.height - 15)
+        } else {
+            node.position = CGPointMake(self.view.frame.size.width - 70, self.view.frame.size.height - 35)
+        }
+        self.addChild(node)
 
     }
 
@@ -172,13 +205,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     override func didSimulatePhysics() {
 
+        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            if node.position.x > self.frame.width + 10 || node.position.x < -10 || node.position.y < -10 {
+                node.removeFromParent()
+            }
+            })
 
+        self.enumerateChildNodesWithName("rock", usingBlock: block)
 
     }
 
     override func update(currentTime: NSTimeInterval) {
 
+        if motionEnabled {
+            self.processUserMotionForUpdate(currentTime)
+        }
 
+    }
+
+    override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
+
+        super.touchesBegan(touches, withEvent: event)
+
+        if motionEnabled {
+            return
+        }
+
+        if self.shouldAcceptFurtherCollisions {
+
+            let hull = self.childNodeWithName("PlatypusBody")
+            let touch: UITouch = touches.anyObject() as UITouch
+            let move = SKAction.moveTo(CGPointMake(touch.locationInNode(self).x, touch.locationInNode(self).y + 50), duration:0.05);
+
+            hull.runAction(move)
+
+        }
+
+    }
+
+    override func touchesMoved(touches: NSSet!, withEvent event: UIEvent!) {
+
+        super.touchesMoved(touches, withEvent: event)
+
+        if motionEnabled {
+            return
+        }
+
+        if self.shouldAcceptFurtherCollisions {
+
+            let hull = self.childNodeWithName("PlatypusBody")
+            let touch: UITouch = touches.anyObject() as UITouch
+            let move = SKAction.moveTo(CGPointMake(touch.locationInNode(self).x, touch.locationInNode(self).y + 50), duration:0.05);
+
+            hull.runAction(move)
+            
+        }
 
     }
 
@@ -187,8 +268,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         let handler:(AnyObject[]!, NSError!) -> Void = ({(array, error) in
 
             if error == nil {
-                for acheivement: AnyObject in array {
+                if let arr = array {
+                    for acheivement: AnyObject in arr {
 
+                    }
                 }
             }
 
