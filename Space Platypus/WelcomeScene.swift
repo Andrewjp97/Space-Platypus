@@ -21,11 +21,11 @@ enum kMeunItemType: Int {
 
 var lastRandom: Double = 0
 
-func random(max: Double) -> Double {
+func randomNumberFunction(max: Double) -> Double {
     if lastRandom == 0 {
-        lastRandom = M_SQRT2
+        lastRandom = NSDate.timeIntervalSinceReferenceDate()
     }
-    var newRand =  ((lastRandom * M_PI) * 1108.6) % max
+    var newRand =  ((lastRandom * M_PI) * 11048.6954) % max
     lastRandom = newRand
     return newRand
 }
@@ -148,6 +148,12 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
+    func newSpark() -> SKEmitterNode {
+        let path = NSBundle.mainBundle().pathForResource("spark", ofType: "sks")
+        let node: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        return node
+    }
+
 
 
     func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!) {
@@ -194,7 +200,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
         let width: CGFloat = CGRectGetWidth(self.frame)
         let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
-        let randomNum = random(widthAsDouble)
+        let randomNum = randomNumberFunction(widthAsDouble)
         let randomNumAsCGFloat: CGFloat = randomNum.bridgeToObjectiveC().floatValue
         let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame))
 

@@ -287,7 +287,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
         let width: CGFloat = CGRectGetWidth(self.frame)
         let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
-        let randomNum = random(widthAsDouble)
+        let randomNum = randomNumberFunction(widthAsDouble)
         let randomNumAsCGFloat: CGFloat = randomNum.bridgeToObjectiveC().floatValue
         let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame))
 
@@ -408,11 +408,103 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             let repeat = SKAction.repeatActionForever(sequence)
             
             self.runAction(repeat)
+        } else {
+            let duration = 0.08
+            let makeRocks = SKAction.runBlock({self.addRock()})
+            let delay = SKAction.waitForDuration(duration)
+            let sequence = SKAction.sequence([makeRocks, delay])
+            let repeat = SKAction.repeatActionForever(sequence)
+
+            self.runAction(repeat)
         }
+        let makeRocks = SKAction.runBlock({self.addPowerup()})
+        let delay = SKAction.waitForDuration(10.0, withRange: 5.0)
+        let sequence = SKAction.sequence([delay, makeRocks])
+        let repeat = SKAction.repeatActionForever(sequence)
+
+        self.runAction(repeat)
     }
 
 
+    func addPowerup() {
 
+        var random = arc4random()
+        let width: CGFloat = CGRectGetWidth(self.frame)
+        let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
+        let randomNum: Double = randomNumberFunction(widthAsDouble) as Double
+        let randomNumAsCGFloat: CGFloat = randomNum.bridgeToObjectiveC().floatValue
+        let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame) + 50)
+        random = random % 3
+        if random == 0 {
+            let lifePowerup = SKSpriteNode(imageNamed: "healthPowerup")
+            lifePowerup.position = point
+            lifePowerup.name = "life"
+            lifePowerup.physicsBody = SKPhysicsBody(rectangleOfSize: lifePowerup.size)
+            lifePowerup.physicsBody.usesPreciseCollisionDetection = true
+            lifePowerup.physicsBody.categoryBitMask = ColliderType.Life.toRaw()
+            lifePowerup.physicsBody.contactTestBitMask = ColliderType.Platypus.toRaw()
+            lifePowerup.physicsBody.collisionBitMask = ColliderType.Platypus.toRaw()
+            lifePowerup.physicsBody.usesPreciseCollisionDetection = true
+            lifePowerup.physicsBody.mass = 1
+            if (!self.impulseSlower) {
+                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.bridgeToObjectiveC().floatValue / 2.0))
+                lifePowerup.physicsBody.applyImpulse(vector)
+            }
+            else {
+                let vector = CGVectorMake(0, -3.0)
+                lifePowerup.physicsBody.applyImpulse(vector)
+            }
+            self.addChild(lifePowerup)
+
+
+        }
+        if (random == 1) {
+            let lifePowerup = SKSpriteNode(imageNamed: "gravityPowerup")
+            lifePowerup.position = point
+            lifePowerup.name = "gravity"
+            lifePowerup.physicsBody = SKPhysicsBody(rectangleOfSize: lifePowerup.size)
+            lifePowerup.physicsBody.usesPreciseCollisionDetection = true
+            lifePowerup.physicsBody.categoryBitMask = ColliderType.Gravity.toRaw()
+            lifePowerup.physicsBody.contactTestBitMask = ColliderType.Platypus.toRaw()
+            lifePowerup.physicsBody.collisionBitMask = ColliderType.Platypus.toRaw()
+            lifePowerup.physicsBody.usesPreciseCollisionDetection = true
+            lifePowerup.physicsBody.mass = 1
+            if (!self.impulseSlower) {
+                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.bridgeToObjectiveC().floatValue / 2.0))
+                lifePowerup.physicsBody.applyImpulse(vector)
+            }
+            else {
+                let vector = CGVectorMake(0, -3.0)
+                lifePowerup.physicsBody.applyImpulse(vector)
+            }
+            self.addChild(lifePowerup)
+
+
+        }
+        if (random == 2) {
+            let lifePowerup = SKSpriteNode(imageNamed: "invinciblePowerup")
+            lifePowerup.position = point
+            lifePowerup.name = "invincible"
+            lifePowerup.physicsBody = SKPhysicsBody(rectangleOfSize: lifePowerup.size)
+            lifePowerup.physicsBody.usesPreciseCollisionDetection = true
+            lifePowerup.physicsBody.categoryBitMask = ColliderType.Shield.toRaw()
+            lifePowerup.physicsBody.contactTestBitMask = ColliderType.Platypus.toRaw()
+            lifePowerup.physicsBody.collisionBitMask = ColliderType.Platypus.toRaw()
+            lifePowerup.physicsBody.usesPreciseCollisionDetection = true
+            lifePowerup.physicsBody.mass = 1
+            if (!self.impulseSlower) {
+                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.bridgeToObjectiveC().floatValue / 2.0))
+                lifePowerup.physicsBody.applyImpulse(vector)
+            }
+            else {
+                let vector = CGVectorMake(0, -3.0)
+                lifePowerup.physicsBody.applyImpulse(vector)
+            }
+            self.addChild(lifePowerup)
+
+        }
+
+    }
 
 
 
