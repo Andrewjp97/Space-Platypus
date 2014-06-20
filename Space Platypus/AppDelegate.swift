@@ -97,7 +97,17 @@ var motionEnabled: Bool = false {
         NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "motion")
     }
 }
-
+var gameCenterEnabled: Bool = true {
+    willSet {
+        if !NSUserDefaults.standardUserDefaults().boolForKey("value") {
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "value")
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "gk")
+        }
+        else {
+            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "gk")
+        }
+    }
+}
 
 
 
@@ -105,48 +115,47 @@ var motionEnabled: Bool = false {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var highScore: Int
-    
 
     init() {
         motionEnabled = NSUserDefaults.standardUserDefaults().boolForKey("motion")
-
-        if let high: Int = NSUserDefaults.standardUserDefaults().objectForKey("highScore") as? Int {
-            self.highScore = high
-        } else {
-            self.highScore = 0
-        }
-
+        //gameCenterEnabled = NSUserDefaults.standardUserDefaults().boolForKey("gk")
+        // if NSUserDefaults.standardUserDefaults().objectForKey("test") as String != "yes" {
+        // gameCenterEnabled = true
+        //    NSUserDefaults.standardUserDefaults().setObject("yes", forKey: "test")
+        // }
+        gameCenterEnabled = NSUserDefaults.standardUserDefaults().boolForKey("gk")
         if let colorString:NSString = NSUserDefaults.standardUserDefaults().objectForKey("platypusColor") as? NSString {
             switch colorString {
-                case "red":
-                    platypusColor = .kPlatypusColorRed
-                case "yellow":
-                    platypusColor = .kPlatypusColorYellow
-                case "green":
-                    platypusColor = .kPlatypusColorGreen
-                case "pink":
-                    platypusColor = .kPlatypusColorPink
-                case "purple":
-                    platypusColor = .kPlatypusColorPurple
-                case "dareDevil":
-                    platypusColor = .kPlatypusColorDareDevil
-                case "santa":
-                    platypusColor = .kPlatypusColorSanta
-                case "elf":
-                    platypusColor = .kPlatypusColorElf
-                case "tree":
-                    platypusColor = .kPlatypusColorChirstmasTree
-                case "fire":
-                    platypusColor = .kPlatypusColorFire
-                case "raindeer":
-                    platypusColor = .kPlatypusColorRaindeer
-                default:
-                    platypusColor = .kPlatypusColorDefault
+            case "red":
+                platypusColor = .kPlatypusColorRed
+            case "yellow":
+                platypusColor = .kPlatypusColorYellow
+            case "green":
+                platypusColor = .kPlatypusColorGreen
+            case "pink":
+                platypusColor = .kPlatypusColorPink
+            case "purple":
+                platypusColor = .kPlatypusColorPurple
+            case "dareDevil":
+                platypusColor = .kPlatypusColorDareDevil
+            case "santa":
+                platypusColor = .kPlatypusColorSanta
+            case "elf":
+                platypusColor = .kPlatypusColorElf
+            case "tree":
+                platypusColor = .kPlatypusColorChirstmasTree
+            case "fire":
+                platypusColor = .kPlatypusColorFire
+            case "raindeer":
+                platypusColor = .kPlatypusColorRaindeer
+            default:
+                platypusColor = .kPlatypusColorDefault
             }
         } else {
             platypusColor = .kPlatypusColorDefault
         }
+        
+
         super.init()
     }
 
@@ -154,6 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         // Override point for customization after application launch.
+        
         return true
     }
 

@@ -20,9 +20,9 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if gameCenterEnabled {
             self.authenticateLocalPlayer()
-
+        }
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -66,7 +66,7 @@ class GameViewController: UIViewController {
                 if controller != nil {
                     self.view.window.rootViewController.presentModalViewController(controller, animated: true)
                 } else {
-                    println("\(localPlayer.authenticated)")
+                    gameCenterEnabled = false
                 }
                 })
 

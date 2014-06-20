@@ -148,11 +148,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
-    func newSpark() -> SKEmitterNode {
-        let path = NSBundle.mainBundle().pathForResource("spark", ofType: "sks")
-        let node: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-        return node
-    }
+    
 
 
 

@@ -17,9 +17,9 @@ protocol TimerDelegate {
 
 class Timer: SKNode {
     var timeElapsed: Int = 0 {
-        willSet {
-            self.timeElapsedString = "\(newValue)"
-        }
+    willSet {
+        self.timeElapsedString = "\(newValue)"
+    }
     }
     var timeElapsedString: String = "0"
     var shouldContinue: Bool = false
@@ -62,9 +62,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     var contentCreated = false
     var seconds = 0
+    var stars: SKEmitterNode
     var running = true
     var invincible = false
-    var hits = 0
+    var hits: Int = 0 {
+    didSet {
+        if hits < 0 {
+            hits = 0
+        }
+        if hits == 0 {
+            let node = self.childNodeWithName("lifeBar") as SKSpriteNode
+            node.texture = SKTexture(imageNamed: "LifeBarFull")
+        }
+        if hits == 1 {
+            let node = self.childNodeWithName("lifeBar") as SKSpriteNode
+            node.texture = SKTexture(imageNamed: "LifeBarTwo")
+        }
+        if hits == 2 {
+            let node = self.childNodeWithName("lifeBar") as SKSpriteNode
+            node.texture = SKTexture(imageNamed: "LifeBarOne")
+        }
+        if hits == 3 {
+            let node = self.childNodeWithName("lifeBar") as SKSpriteNode
+            node.texture = SKTexture(imageNamed: "LifeBarEmpty")
+        }
+        if hits > 3 {
+            self.gameOver()
+        }
+    }
+    }
     var leaderboards: AnyObject[] = []
     var shouldAcceptFurtherCollisions = true
     var shouldMakeMoreRocks = true
@@ -86,22 +112,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
     init(size: CGSize) {
 
         self.timerLabel  = SKLabelNode(fontNamed: "Helvetica")
-        self.timerLabel.text = "0: 00"
-
+        self.timerLabel.text = "0:00"
+        self.stars = SKEmitterNode()
         super.init(size: size)
+        self.stars = makeStars()
+        self.addChild(self.stars)
 
-        
+
     }
 
     func timerDidChangeTime(value: Int, valueString: String) {
         self.seconds = value
         let string = value % 60 < 10 ? "0\(value % 60)" : "\(value % 60)"
-        self.timerLabel.text = "\(value / 60): \(string)"
+        self.timerLabel.text = "\(value / 60):\(string)"
         self.timerLabel.position = CGPointMake(10 + (0.5 * self.timerLabel.frame.size.width), self.frame.size.height - 20 - (0.5 * self.timerLabel.frame.size.height))
         NSLog(valueString)
         NSLog(self.timerLabel.text)
         NSLog("\(self.timerLabel.position)")
     }
+
+
 
     override func didMoveToView(view: SKView) {
 
@@ -129,43 +159,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             self.physicsWorld.gravity = CGVectorMake(0, -1.5)
 
             loadAchievements()
+            loadLeaderboardInfo()
 
         }
     }
 
     func processUserMotionForUpdate(currentTimeInterval: NSTimeInterval) {
+        if self.shouldAcceptFurtherCollisions {
+            let ship = self.childNodeWithName("PlatypusBody")
+            let data = self.motionManager?.accelerometerData
 
-        let ship = self.childNodeWithName("PlatypusBody")
-        let data = self.motionManager?.accelerometerData
+            if let datas = data {
 
-        if let datas = data {
+                let positionY: Double = ship.position.y.bridgeToObjectiveC().doubleValue
+                let positionX: Double = ship.position.x.bridgeToObjectiveC().doubleValue
+                let accelerometerX: Double = datas.acceleration.x as Double * 15.0
+                let accelerometerY: Double = datas.acceleration.y as Double * 15.0
+                let height: Double = CGRectGetMaxY(self.frame).bridgeToObjectiveC().doubleValue
+                let width: Double = CGRectGetMaxX(self.frame).bridgeToObjectiveC().doubleValue
 
-            let positionY: Double = ship.position.y.bridgeToObjectiveC().doubleValue
-            let positionX: Double = ship.position.x.bridgeToObjectiveC().doubleValue
-            let accelerometerX: Double = datas.acceleration.x as Double * 15.0
-            let accelerometerY: Double = datas.acceleration.y as Double * 15.0
-            let height: Double = CGRectGetMaxY(self.frame).bridgeToObjectiveC().doubleValue
-            let width: Double = CGRectGetMaxX(self.frame).bridgeToObjectiveC().doubleValue
+                let horizontalNotNegative: Bool = positionX + accelerometerX >= 0.0
+                let horizontalNotPastScreen: Bool = positionX + accelerometerX <= width
+                let verticalNotNegative: Bool = positionY + accelerometerY >= 0.0
+                let verticalNotPastScreen: Bool = positionY + accelerometerY <= height
 
-            let horizontalNotNegative: Bool = positionX + accelerometerX >= 0.0
-            let horizontalNotPastScreen: Bool = positionX + accelerometerX <= width
-            let verticalNotNegative: Bool = positionY + accelerometerY >= 0.0
-            let verticalNotPastScreen: Bool = positionY + accelerometerY <= height
+                let horizontal: Bool = horizontalNotNegative && horizontalNotPastScreen
+                let vertical: Bool = verticalNotNegative && verticalNotPastScreen
 
-            let horizontal: Bool = horizontalNotNegative && horizontalNotPastScreen
-            let vertical: Bool = verticalNotNegative && verticalNotPastScreen
+                if horizontal && vertical {
 
-            if horizontal && vertical {
+                    let newX = positionX + accelerometerX
+                    let newY = positionY + accelerometerY
 
-                let newX = positionX + accelerometerX
-                let newY = positionY + accelerometerY
+                    let newPostion = CGPointMake(newX.bridgeToObjectiveC().floatValue, newY.bridgeToObjectiveC().floatValue)
 
-                let newPostion = CGPointMake(newX.bridgeToObjectiveC().floatValue, newY.bridgeToObjectiveC().floatValue)
+                    ship.position = newPostion
 
-                ship.position = newPostion
+                }
 
             }
-
         }
 
 
@@ -174,7 +206,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     func createSceneContent() {
 
-        self.makeStars()
         self.makePlatypus()
         self.addRocks()
         self.timer.start()
@@ -194,12 +225,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             node.position = CGPointMake(self.view.frame.size.width - 70, self.view.frame.size.height - 35)
         }
         self.addChild(node)
-
-    }
-
-    func didBeginContact(contact: SKPhysicsContact!) {
-
-
 
     }
 
@@ -258,26 +283,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             let move = SKAction.moveTo(CGPointMake(touch.locationInNode(self).x, touch.locationInNode(self).y + 50), duration:0.05);
 
             hull.runAction(move)
-            
+
         }
-
-    }
-
-    func loadAchievements() {
-
-        let handler:(AnyObject[]!, NSError!) -> Void = ({(array, error) in
-
-            if error == nil {
-                if let arr = array {
-                    for acheivement: AnyObject in arr {
-
-                    }
-                }
-            }
-
-            })
-
-        GKAchievement.loadAchievementsWithCompletionHandler(handler)
 
     }
 
@@ -300,21 +307,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         rock.physicsBody.collisionBitMask = ColliderType.Rock.toRaw() | ColliderType.Platypus.toRaw()
 
         self.addChild(rock)
-        rock.physicsBody.applyImpulse(CGVectorMake(0, -0.75))
+        rock.physicsBody.applyImpulse(CGVectorMake(0, -0.75 * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.bridgeToObjectiveC().floatValue / 100.0))))
 
 
     }
 
-    func makeStars() {
+    func makeStars() -> SKEmitterNode {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
         let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
         stars.particlePosition = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame))
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2
-        self.addChild(stars)
         stars.advanceSimulationTime(3.0)
-        
+        return stars
+
     }
 
     func newEye() -> SKSpriteNode {
@@ -350,9 +357,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         var blinkForever = SKAction.repeatActionForever(blink)
 
         light.runAction(blinkForever)
-        
+
         return  light
-        
+
     }
 
     func makePlatypus() {
@@ -392,7 +399,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         exhaust.position = CGPointMake(0, -32)
         platypusBody.addChild(exhaust)
 
-        platypusBody.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height - 100)
+        platypusBody.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 3.0)
 
         self.addChild(platypusBody)
 
@@ -401,15 +408,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     func addRocks() {
         if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
-            let duration = 0.10
+            let duration = 0.16
             let makeRocks = SKAction.runBlock({self.addRock()})
             let delay = SKAction.waitForDuration(duration)
             let sequence = SKAction.sequence([makeRocks, delay])
             let repeat = SKAction.repeatActionForever(sequence)
-            
+
             self.runAction(repeat)
         } else {
-            let duration = 0.08
+            let duration = 0.12
             let makeRocks = SKAction.runBlock({self.addRock()})
             let delay = SKAction.waitForDuration(duration)
             let sequence = SKAction.sequence([makeRocks, delay])
@@ -506,103 +513,254 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     }
 
+    func didBeginContact(contact: SKPhysicsContact!) {
+        NSLog("\(self.hits)")
+        let bodyA = contact.bodyA
+        let bodyB = contact.bodyB
+        var typeA: ColliderType = ColliderType.fromRaw(bodyA.categoryBitMask)!
+        var typeB: ColliderType = ColliderType.fromRaw(bodyB.categoryBitMask)!
+
+        if (typeA == .Rock) && (typeB == .Rock) {
+            bodyA.node.addChild(self.newSpark())
+            bodyB.node.addChild(self.newSpark())
+        } else if (typeA == .Rock || typeB == .Rock) && (typeA != .Platypus && typeB != .Platypus) {
+            bodyA.node.addChild(self.newSpark())
+            bodyB.node.addChild(self.newSpark())
+        } else if (typeA == .Rock || typeB == .Rock) && (typeA == .Platypus || typeB == .Platypus) {
+            typeA == .Rock ? bodyA.node.addChild(newSpark()) : bodyB.node.addChild(newSpark())
+            if !self.invincible {
+                hits++
+                if hits < 4 {
+                    self.handleInvincibility()
+                } else {
+                    self.shouldAcceptFurtherCollisions = false
+                    self.shouldMakeMoreRocks = false
+                }
+            }
+        } else if (typeA == .Life || typeB == .Life) && (typeA == .Platypus || typeB == .Platypus) {
+            hits--
+            typeA == .Life ? bodyA.node.removeFromParent() : bodyB.node.removeFromParent()
+        } else if (typeA == .Gravity || typeB == .Gravity) && (typeA == .Platypus || typeB == .Platypus) {
+            self.handleSlow()
+            typeA == .Gravity ? bodyA.node.removeFromParent() : bodyB.node.removeFromParent()
+        } else if (typeA == .Shield || typeB == .Shield) && (typeA == .Platypus || typeB == .Platypus) {
+            self.handleInvincibility()
+            typeA == .Shield ? bodyA.node.removeFromParent() : bodyB.node.removeFromParent()
+        }
+
+
+
+    }
+
+    func handleSlow() {
+        self.impulseSlower = true
+        let block = SKAction.runBlock({self.impulseSlower = false})
+        let delay = SKAction.waitForDuration(6.0)
+        let sequence = SKAction.sequence([delay, block])
+        self.runAction(sequence)
+
+
+    }
+
+    func newSpark() -> SKEmitterNode {
+        let path = NSBundle.mainBundle().pathForResource("spark", ofType: "sks")
+        let node: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        return node
+    }
+
+    func handleInvincibility() {
+        self.invincible = true
+        let node = self.childNodeWithName("PlatypusBody") as SKSpriteNode
+        let fadeout = SKAction.fadeOutWithDuration(0.25)
+        let fadeIn = SKAction.fadeInWithDuration(0.25)
+        let block = SKAction.runBlock({self.invincible = false})
+        let sequence = SKAction.sequence([fadeout, fadeIn, fadeout, fadeIn, fadeout, fadeIn, fadeout, fadeIn, fadeout,fadeIn, fadeout, fadeIn, block])
+        node.runAction(sequence)
+
+    }
+
+    func gameOver() {
+        let point = self.childNodeWithName("PlatypusBody").position
+        self.timer.stop()
+        self.removeAllActions()
+        self.removeAllChildren()
+        self.addChild(self.stars)
+        self.stars.advanceSimulationTime(6.0)
+        let path = NSBundle.mainBundle().pathForResource("MyExplosion", ofType: "sks")
+        let node = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        node.position = point
+        self.addChild(node)
+
+        let label = SKLabelNode(fontNamed: "Helvetica")
+        label.text = self.timerLabel.text
+        label.fontSize = 36
+        label.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        label.hidden = true
+        label.name = "label"
+        let finalBlock: () -> () = ({
+
+            self.doGameCenter()
+            let scene = WelcomeScene(size: self.size)
+            let transition = SKTransition.doorsCloseHorizontalWithDuration(0.5)
+            self.scene.view.presentScene(scene, transition: transition)
+
+            })
+        self.addChild(label)
+        let delay = SKAction.waitForDuration(1.0)
+        let block = SKAction.runBlock({self.childNodeWithName("label").hidden = false})
+        let delay2 = SKAction.waitForDuration(2.0)
+        let block2 = SKAction.runBlock(finalBlock)
+        let sequence = SKAction.sequence([delay, block, delay2, block2])
+        self.runAction(sequence)
+    }
+
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    func doGameCenter() {
+        if gameCenterEnabled {
+            self.reportAchievement("Play_Space_Platypus_Once", additionalCompletion: 100.0)
+            self.reportAchievement("Play_10_Games_of_Space_Platypus", additionalCompletion: 10.0)
+            let score: Int64 = Int64(self.seconds)
+            self.reportScore(score, leaderboardID: "Highest0Time0Without0Hitting0A0Rock000000001")
+
+            if motionEnabled {
+                if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                    self.reportScore(score, leaderboardID: "HighestTimeiPhoneAccelerometer")
+                } else {
+                    self.reportScore(score, leaderboardID: "HighestTimeiPadAccelerometer")
+                }
+            }
+            if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                self.reportScore(score, leaderboardID: "HightestTimeiPhone")
+            } else {
+                self.reportScore(score, leaderboardID: "HighestTimeiPad")
+            }
+        }
+    }
+
+    func loadLeaderboardInfo() {
+        GKLeaderboard.loadLeaderboardsWithCompletionHandler({(array, error) in if array {self.leaderboards = array}})
+    }
+
+    func reportScore(score: Int64, leaderboardID: String) {
+        let reporter = GKScore(leaderboardIdentifier: leaderboardID)
+        reporter.value = score
+        reporter.context = 0
+        reporter.reportScoreWithCompletionHandler(nil)
+    }
+
+    func loadAchievements() {
+        GKAchievement.loadAchievementsWithCompletionHandler({(array, error) in
+            if !error {
+                for thing: AnyObject in array {
+                    self.achievementsDictionary.setValue(thing, forKey: thing.identifier)
+                }
+            }
+            })
+    }
+
+    func reportAchievement(identifier: String, additionalCompletion: CDouble) {
+        let achievement: GKAchievement = self.getAchievementForIdentifier(identifier)
+        if achievement != nil && achievement.percentComplete != 100.0 {
+            achievement.percentComplete += additionalCompletion
+            GKAchievement.reportAchievements([achievement], withCompletionHandler: nil)
+        }
+    }
+    
+    func getAchievementForIdentifier(identifier: String) -> GKAchievement {
+        if self.achievementsDictionary.valueForKey(identifier) {
+            return self.achievementsDictionary.valueForKey(identifier) as GKAchievement
+        } else {
+            let achievement = GKAchievement(identifier: identifier)
+            self.achievementsDictionary.setValue(achievement, forKey: identifier)
+            return achievement
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 
