@@ -14,6 +14,20 @@ import CoreMotion
 protocol TimerDelegate {
     func timerDidChangeTime(value: Int, valueString: String)
 }
+extension Double {
+    var CGFloatValue: CGFloat {
+    get {
+        return CGFloat(self)
+    }
+    }
+}
+extension Int {
+    var CGFloatValue: CGFloat {
+    get {
+        return CGFloat(self)
+    }
+    }
+}
 
 class Timer: SKNode {
     var timeElapsed: Int = 0 {
@@ -191,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
                     let newX = positionX + accelerometerX
                     let newY = positionY + accelerometerY
 
-                    let newPostion = CGPointMake(newX.bridgeToObjectiveC().floatValue, newY.bridgeToObjectiveC().floatValue)
+                    let newPostion = CGPointMake(newX.CGFloatValue, newY.CGFloatValue)
 
                     ship.position = newPostion
 
@@ -295,7 +309,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         let width: CGFloat = CGRectGetWidth(self.frame)
         let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
         let randomNum = randomNumberFunction(widthAsDouble)
-        let randomNumAsCGFloat: CGFloat = randomNum.bridgeToObjectiveC().floatValue
+        let randomNumAsCGFloat: CGFloat = CGFloat(randomNum)
         let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame))
 
         rock.position = point
@@ -307,7 +321,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         rock.physicsBody.collisionBitMask = ColliderType.Rock.toRaw() | ColliderType.Platypus.toRaw()
 
         self.addChild(rock)
-        rock.physicsBody.applyImpulse(CGVectorMake(0, -0.75 * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.bridgeToObjectiveC().floatValue / 100.0))))
+        rock.physicsBody.applyImpulse(CGVectorMake(0, -0.75 * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.CGFloatValue / 100.0))))
 
 
     }
@@ -439,7 +453,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         let width: CGFloat = CGRectGetWidth(self.frame)
         let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
         let randomNum: Double = randomNumberFunction(widthAsDouble) as Double
-        let randomNumAsCGFloat: CGFloat = randomNum.bridgeToObjectiveC().floatValue
+        let randomNumAsCGFloat: CGFloat = randomNum.CGFloatValue
         let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame) + 50)
         random = random % 3
         if random == 0 {
@@ -454,7 +468,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             lifePowerup.physicsBody.usesPreciseCollisionDetection = true
             lifePowerup.physicsBody.mass = 1
             if (!self.impulseSlower) {
-                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.bridgeToObjectiveC().floatValue / 2.0))
+                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.CGFloatValue / 2.0))
                 lifePowerup.physicsBody.applyImpulse(vector)
             }
             else {
@@ -477,7 +491,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             lifePowerup.physicsBody.usesPreciseCollisionDetection = true
             lifePowerup.physicsBody.mass = 1
             if (!self.impulseSlower) {
-                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.bridgeToObjectiveC().floatValue / 2.0))
+                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.CGFloatValue / 2.0))
                 lifePowerup.physicsBody.applyImpulse(vector)
             }
             else {
@@ -500,7 +514,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             lifePowerup.physicsBody.usesPreciseCollisionDetection = true
             lifePowerup.physicsBody.mass = 1
             if (!self.impulseSlower) {
-                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.bridgeToObjectiveC().floatValue / 2.0))
+                let vector = CGVectorMake(0, 0.0 - 3.0 - (self.level.CGFloatValue / 2.0))
                 lifePowerup.physicsBody.applyImpulse(vector)
             }
             else {

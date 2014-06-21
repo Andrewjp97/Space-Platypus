@@ -33,13 +33,13 @@ func randomNumberFunction(max: Double) -> Double {
 class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDelegate {
 
     var contentCreated: Bool = false
-    var midScreenY: Float = 0.0
+    var midScreenY: CGFloat = 0.0
     var color: kPlatypusColor = platypusColor
     var counter: Int = 0
 
     init(size: CGSize) {
         super.init(size: size)
-        self.midScreenY = CGRectGetMidY(self.frame).bridgeToObjectiveC().floatValue
+        self.midScreenY = CGRectGetMidY(self.frame)
     }
 
     enum ColliderType: UInt32 {
@@ -197,7 +197,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         let width: CGFloat = CGRectGetWidth(self.frame)
         let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
         let randomNum = randomNumberFunction(widthAsDouble)
-        let randomNumAsCGFloat: CGFloat = randomNum.bridgeToObjectiveC().floatValue
+        let randomNumAsCGFloat: CGFloat = randomNum.CGFloatValue
         let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame))
 
         rock.position = point
@@ -404,7 +404,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     func whatMenuItemTypeIsAtPoint(point: CGPoint) -> kMeunItemType {
 
-        if point.y > (midScreenY - 54) && point.y < (midScreenY - 18) {
+        if point.y.CGFloatValue > (midScreenY - 54.0) && point.y.CGFloatValue < (midScreenY - 18.0) {
             return .kMenuItemTypePlay
         } else if point.y > (midScreenY - 90) && point.y < (midScreenY - 54) {
             return .kMenuItemTypeCustomize
