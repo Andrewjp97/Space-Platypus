@@ -404,7 +404,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     func whatMenuItemTypeIsAtPoint(point: CGPoint) -> kMeunItemType {
 
-        if point.y.CGFloatValue > (midScreenY - 54.0) && point.y.CGFloatValue < (midScreenY - 18.0) {
+        if point.y > (midScreenY - 54.0) && point.y < (midScreenY - 18.0) {
             return .kMenuItemTypePlay
         } else if point.y > (midScreenY - 90) && point.y < (midScreenY - 54) {
             return .kMenuItemTypeCustomize
