@@ -192,6 +192,7 @@ class CustomizeScene: SKScene {
         }
 
     }
+    
 
     func makeStars() {
 
@@ -201,7 +202,7 @@ class CustomizeScene: SKScene {
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2
         self.addChild(stars)
-        stars.advanceSimulationTime(3.0)
+        stars.advanceSimulationTime(10.0)
         
     }
 

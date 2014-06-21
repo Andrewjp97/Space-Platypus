@@ -333,7 +333,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         stars.particlePosition = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame))
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2
-        stars.advanceSimulationTime(3.0)
+        stars.advanceSimulationTime(10.0)
         return stars
 
     }

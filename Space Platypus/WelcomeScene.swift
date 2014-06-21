@@ -222,7 +222,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2
         self.addChild(stars)
-        stars.advanceSimulationTime(3.0)
+        stars.advanceSimulationTime(10.0)
 
     }
 
