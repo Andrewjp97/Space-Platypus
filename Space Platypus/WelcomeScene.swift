@@ -391,7 +391,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
     }
 
     func addRocks() {
-        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
+        
             let duration = 0.10
             let makeRocks = SKAction.runBlock({self.addRock()})
             let delay = SKAction.waitForDuration(duration)
@@ -399,7 +399,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
             let repeat = SKAction.repeatActionForever(sequence)
 
             self.runAction(repeat)
-        }
+        
     }
 
     func whatMenuItemTypeIsAtPoint(point: CGPoint) -> kMeunItemType {

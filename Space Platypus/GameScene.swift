@@ -35,6 +35,7 @@ class Timer: SKNode {
         self.timeElapsedString = "\(newValue)"
     }
     }
+    var scale: Double = 1.0
     var timeElapsedString: String = "0"
     var shouldContinue: Bool = false
     var delegate: TimerDelegate?
@@ -43,7 +44,7 @@ class Timer: SKNode {
     func start() {
         self.shouldContinue = true
         let performBlock = SKAction.runBlock({self.addTime()})
-        let delay = SKAction.waitForDuration(1.0)
+        let delay = SKAction.waitForDuration(1.0 * self.scale)
         let action = SKAction.sequence([delay, performBlock])
         self.runAction(action)
     }
@@ -55,7 +56,7 @@ class Timer: SKNode {
         }
         if self.shouldContinue {
             let performBlock = SKAction.runBlock({self.addTime()})
-            let delay = SKAction.waitForDuration(1.0)
+            let delay = SKAction.waitForDuration(1.0 * self.scale)
             let action = SKAction.sequence([delay, performBlock])
             self.runAction(action)
         }
@@ -101,6 +102,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             node.texture = SKTexture(imageNamed: "LifeBarEmpty")
         }
         if hits > 3 {
+            self.slowMotion = false
             self.gameOver()
         }
     }
@@ -114,7 +116,84 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
     var impulseSlower = false
     var timer: Timer = Timer()
     var timerLabel: SKLabelNode
+    var slowMotion: Bool = false {
+        willSet {
+            if newValue == false {
+                self.removeSlowMotion()
+            }
+            else {
+                self.addSlowMotion()
+            }
+        }
+    }
 
+    func removeSlowMotion() {
+        self.timer.scale = 1.0
+        let action = SKAction.runBlock({
+            let node = self.childNodeWithName("slow") as SKSpriteNode
+            node.alpha = node.alpha - 0.4
+            })
+        let repeat = SKAction.repeatAction(SKAction.sequence([action, SKAction.waitForDuration(0.025)]), count: 10)
+        self.runAction(repeat)
+        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            
+            if let node = node as? SKSpriteNode {
+                let origional = node.physicsBody
+                node.physicsBody = nil
+                node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
+                node.physicsBody.categoryBitMask = origional.categoryBitMask
+                node.physicsBody.collisionBitMask = origional.collisionBitMask
+                node.physicsBody.contactTestBitMask = origional.contactTestBitMask
+                node.physicsBody.applyImpulse(CGVectorMake(0, -0.75 * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.CGFloatValue / 100.0))))
+            }
+            
+            })
+        self.enumerateChildNodesWithName("rock", usingBlock: block)
+        self.enumerateChildNodesWithName("life", usingBlock: block)
+        self.enumerateChildNodesWithName("gravity", usingBlock: block)
+        self.enumerateChildNodesWithName("invincible", usingBlock: block)
+        self.physicsWorld.gravity = CGVectorMake(0, self.physicsWorld.gravity.dy * 20)
+        
+        
+
+    
+    }
+    
+    func addSlowMotion(){
+        self.timer.scale = 8.0
+        let node = SKSpriteNode(color: SKColor(white: 0.1, alpha: 0.6), size: self.size)
+        node.alpha = 0.0
+        node.name = "slow"
+        node.anchorPoint = CGPointZero
+        node.zPosition = 1000
+        let action = SKAction.runBlock({
+            let node = self.childNodeWithName("slow") as SKSpriteNode
+            node.alpha = node.alpha + 0.2
+            })
+        let repeat = SKAction.repeatAction(SKAction.sequence([action, SKAction.waitForDuration(0.05)]), count: 20)
+        self.addChild(node)
+        node.runAction(repeat)
+        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            if let node = node as? SKSpriteNode {
+            let origional = node.physicsBody
+                node.physicsBody = nil
+                node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
+                node.physicsBody.categoryBitMask = origional.categoryBitMask
+                node.physicsBody.collisionBitMask = origional.collisionBitMask
+                node.physicsBody.contactTestBitMask = origional.contactTestBitMask
+                node.physicsBody.applyImpulse(CGVectorMake(0, -0.125 * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.CGFloatValue / 100.0))))
+            }
+            
+            
+            })
+        self.enumerateChildNodesWithName("rock", usingBlock: block)
+        self.enumerateChildNodesWithName("life", usingBlock: block)
+        self.enumerateChildNodesWithName("gravity", usingBlock: block)
+        self.enumerateChildNodesWithName("invincible", usingBlock: block)
+        self.physicsWorld.gravity = CGVectorMake(0, self.physicsWorld.gravity.dy * 0.05)
+        
+    }
+    
     enum ColliderType: UInt32 {
         case Rock = 1
         case Life = 2
@@ -223,6 +302,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         self.makePlatypus()
         self.addRocks()
         self.timer.start()
+        let makeRocks = SKAction.runBlock({self.addPowerup()})
+        let delay = SKAction.waitForDuration(10.0, withRange: 5.0)
+        let sequence = SKAction.sequence([delay, makeRocks])
+        let repeat = SKAction.repeatActionForever(sequence)
+        
+        self.runAction(repeat)
         self.makeLifeBar()
 
 
@@ -266,6 +351,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
         super.touchesBegan(touches, withEvent: event)
 
+        if self.slowMotion {
+            self.slowMotion = false
+        }
+        
         if motionEnabled {
             return
         }
@@ -301,6 +390,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
 
     }
+    
+    override func touchesEnded(touches: NSSet!, withEvent event: UIEvent!) {
+        if self.shouldAcceptFurtherCollisions && !motionEnabled {
+            self.slowMotion = true
+        }
+    }
 
 
     func addRock() {
@@ -321,7 +416,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         rock.physicsBody.collisionBitMask = ColliderType.Rock.toRaw() | ColliderType.Platypus.toRaw()
 
         self.addChild(rock)
-        rock.physicsBody.applyImpulse(CGVectorMake(0, -0.75 * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.CGFloatValue / 100.0))))
+        rock.physicsBody.applyImpulse(CGVectorMake(0, (self.slowMotion ? -0.125 : -0.75) * (self.impulseSlower ? 0.5 : 1.0) * (1.0 + (self.seconds.CGFloatValue / 100.0))))
+        NSLog("\(rock.physicsBody.velocity.dy)")
 
 
     }
@@ -422,28 +518,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     func addRocks() {
         if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
-            let duration = 0.16
+            let duration = self.slowMotion ? 1.36 : 0.16
             let makeRocks = SKAction.runBlock({self.addRock()})
+            let makeRocks2 = SKAction.runBlock({self.addRocks()})
             let delay = SKAction.waitForDuration(duration)
-            let sequence = SKAction.sequence([makeRocks, delay])
-            let repeat = SKAction.repeatActionForever(sequence)
-
-            self.runAction(repeat)
+            let sequence = SKAction.sequence([makeRocks, delay, makeRocks2])
+            self.runAction(sequence)
         } else {
-            let duration = 0.12
+            let duration = self.slowMotion ? 0.96 : 0.12
             let makeRocks = SKAction.runBlock({self.addRock()})
+            let makeRocks2 = SKAction.runBlock({self.addRocks()})
             let delay = SKAction.waitForDuration(duration)
-            let sequence = SKAction.sequence([makeRocks, delay])
-            let repeat = SKAction.repeatActionForever(sequence)
+            let sequence = SKAction.sequence([makeRocks, delay, makeRocks2])
 
-            self.runAction(repeat)
+            self.runAction(sequence)
         }
-        let makeRocks = SKAction.runBlock({self.addPowerup()})
-        let delay = SKAction.waitForDuration(10.0, withRange: 5.0)
-        let sequence = SKAction.sequence([delay, makeRocks])
-        let repeat = SKAction.repeatActionForever(sequence)
-
-        self.runAction(repeat)
     }
 
 
