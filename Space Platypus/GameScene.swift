@@ -11,68 +11,6 @@ import SpriteKit
 import GameKit
 import CoreMotion
 
-protocol TimerDelegate {
-    func timerDidChangeTime(value: Int, valueString: String)
-}
-extension Double {
-    var CGFloatValue: CGFloat {
-    get {
-        return CGFloat(self)
-    }
-    }
-}
-extension Int {
-    var CGFloatValue: CGFloat {
-    get {
-        return CGFloat(self)
-    }
-    }
-}
-
-class Timer: SKNode {
-    var timeElapsed: Int = 0 {
-    willSet {
-        self.timeElapsedString = "\(newValue)"
-    }
-    }
-    var scale: Double = 1.0
-    var timeElapsedString: String = "0"
-    var shouldContinue: Bool = false
-    var delegate: TimerDelegate?
-
-    /// Starts the Timer
-    func start() {
-        self.shouldContinue = true
-        let performBlock = SKAction.runBlock({self.addTime()})
-        let delay = SKAction.waitForDuration(1.0 * self.scale)
-        let action = SKAction.sequence([delay, performBlock])
-        self.runAction(action)
-    }
-
-    func addTime() {
-        self.timeElapsed++
-        if let del = self.delegate {
-            del.timerDidChangeTime(self.timeElapsed, valueString: self.timeElapsedString)
-        }
-        if self.shouldContinue {
-            let performBlock = SKAction.runBlock({self.addTime()})
-            let delay = SKAction.waitForDuration(1.0 * self.scale)
-            let action = SKAction.sequence([delay, performBlock])
-            self.runAction(action)
-        }
-    }
-
-    /// Stops the Timer
-    func stop() {
-        self.shouldContinue = false
-    }
-
-
-    func clear() {
-        self.timeElapsed = 0
-    }
-}
-
 class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     var contentCreated = false
@@ -127,12 +65,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
 
+    /**
+    *  Handles returning the scene to it's normal state
+    *
+    *  @return Void
+    */
     func removeSlowMotion() {
+        self.timer.removeAllActions()
         self.timer.scale = 1.0
+        self.timer.start()
         let action = SKAction.runBlock({
-            let node = self.childNodeWithName("slow") as SKSpriteNode
+            self.enumerateChildNodesWithName("slow", usingBlock: ({(node, stop) in
             node.alpha = node.alpha - 0.4
+            }))
             })
+        
         let repeat = SKAction.repeatAction(SKAction.sequence([action, SKAction.waitForDuration(0.025)]), count: 10)
         self.runAction(repeat)
         let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
@@ -159,6 +106,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
     
     }
     
+    /**
+    *  Handles the implementaion of slowing down the scene and overlaying a transparent node
+    *
+    *  @return Void
+    */
     func addSlowMotion(){
         self.timer.scale = 8.0
         let node = SKSpriteNode(color: SKColor(white: 0.1, alpha: 0.6), size: self.size)
@@ -193,14 +145,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         self.physicsWorld.gravity = CGVectorMake(0, self.physicsWorld.gravity.dy * 0.05)
         
     }
-    
-    enum ColliderType: UInt32 {
-        case Rock = 1
-        case Life = 2
-        case Platypus = 4
-        case Gravity = 8
-        case Shield = 16
-    }
 
     init(size: CGSize) {
 
@@ -223,8 +167,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         NSLog(self.timerLabel.text)
         NSLog("\(self.timerLabel.position)")
     }
-
-
 
     override func didMoveToView(view: SKView) {
 
@@ -257,7 +199,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
 
+    /**
+    *  Processes the motion from the accelerometer
+    *
+    *  @param NSTimeInterval The time interval since the last update
+    *
+    *  @return Void
+    */
     func processUserMotionForUpdate(currentTimeInterval: NSTimeInterval) {
+        
         if self.shouldAcceptFurtherCollisions {
             let ship = self.childNodeWithName("PlatypusBody")
             let data = self.motionManager?.accelerometerData
@@ -289,17 +239,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
                     ship.position = newPostion
 
                 }
-
             }
         }
-
-
-
     }
 
+    /**
+    *  Creates the Scenes content
+    *
+    *  @return Void
+    */
     func createSceneContent() {
 
-        self.makePlatypus()
+        let platypus = PlatypusNode(type: platypusColor)
+        platypus.position = CGPointMake(self.frame.size.width / 2, 100)
+        self.addChild(platypus)
+        
         self.addRocks()
         self.timer.start()
         let makeRocks = SKAction.runBlock({self.addPowerup()})
@@ -309,11 +263,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         
         self.runAction(repeat)
         self.makeLifeBar()
-
-
-
+        
     }
 
+    /**
+    *  Creates the life bar and displays it on screen
+    *
+    *  @return Void
+    */
     func makeLifeBar() {
 
         let node = SKSpriteNode(imageNamed: "LifeBarFull")
@@ -397,7 +354,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
 
-
+    /**
+    *  Creates an individual rock and applys an impulse to it
+    *
+    *  @return Void
+    */
     func addRock() {
         let rock = SKSpriteNode(color: SKColor(red: 0.67647, green:0.51568, blue:0.29216, alpha:1.0), size: CGSizeMake(8, 8))
 
@@ -422,6 +383,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     }
 
+    /**
+    *  Makes the stars in the scene background
+    *
+    *  @return Void
+    */
     func makeStars() -> SKEmitterNode {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
@@ -434,88 +400,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     }
 
-    func newEye() -> SKSpriteNode {
-
-        let textures = [SKTexture(imageNamed: "EyeOpen"),
-            SKTexture(imageNamed: "EyeBlinking1"),
-            SKTexture(imageNamed: "EyeBlinking2"),
-            SKTexture(imageNamed: "EyeBlinking3"),
-            SKTexture(imageNamed: "EyeBlinking4"),
-            SKTexture(imageNamed: "EyeBlinking5"),
-            SKTexture(imageNamed: "EyeBlinking6"),
-            SKTexture(imageNamed: "EyeBlinking7"),
-            SKTexture(imageNamed: "EyeBlinking8"),
-            SKTexture(imageNamed: "EyeBlinking9"),
-            SKTexture(imageNamed: "EyeBlinking10"),
-            SKTexture(imageNamed: "EyeBlinking11"),
-            SKTexture(imageNamed: "EyeBlinking12"),
-            SKTexture(imageNamed: "EyeBlinking13"),
-            SKTexture(imageNamed: "EyeBlinking14"),
-            SKTexture(imageNamed: "EyeBlinking15"),
-            SKTexture(imageNamed: "EyeBlinking16"),
-            SKTexture(imageNamed: "EyeBlinking17"),
-            SKTexture(imageNamed: "EyeBlinking18"),
-            SKTexture(imageNamed: "EyeBlinking19")]
-
-        var light = SKSpriteNode(imageNamed: "EyeOpen")
-
-        var blinkClose = SKAction.animateWithTextures(textures, timePerFrame: 0.005)
-
-        var blink = SKAction.sequence([blinkClose, SKAction.waitForDuration(0.025),
-            blinkClose.reversedAction(), SKAction.waitForDuration(3.0)])
-
-        var blinkForever = SKAction.repeatActionForever(blink)
-
-        light.runAction(blinkForever)
-
-        return  light
-
-    }
-
-    func makePlatypus() {
-
-        let imageName = imageNameForPlatypusColor(platypusColor)
-        var platypusBody = SKSpriteNode(imageNamed: imageName)
-        platypusBody.name = "PlatypusBody"
-
-        platypusBody.physicsBody = SKPhysicsBody(texture: platypusBody.texture, size: platypusBody.size)
-        platypusBody.physicsBody.dynamic = false
-        platypusBody.physicsBody.contactTestBitMask = ColliderType.Rock.toRaw() | ColliderType.Life.toRaw()
-        platypusBody.physicsBody.categoryBitMask = ColliderType.Platypus.toRaw()
-        platypusBody.physicsBody.collisionBitMask = ColliderType.Rock.toRaw()
-        if platypusColor == kPlatypusColor.kPlatypusColorFire {
-
-            let path = NSBundle.mainBundle().pathForResource("bodyOnFire", ofType: "sks")
-            let flame: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-            flame.position = platypusBody.position
-            flame.zPosition = 9
-            platypusBody.addChild(flame)
-
-        }
-
-
-        let eyeOne = newEye()
-        eyeOne.position = CGPointMake(-10, 16)
-        eyeOne.zPosition = 100
-        platypusBody.addChild(eyeOne)
-
-        let eyeTwo = newEye()
-        eyeTwo.position = CGPointMake(10, 16)
-        eyeTwo.zPosition = 100
-        platypusBody.addChild(eyeTwo)
-
-        let path = NSBundle.mainBundle().pathForResource("MyParticle", ofType: "sks")
-        let exhaust: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-        exhaust.position = CGPointMake(0, -32)
-        platypusBody.addChild(exhaust)
-
-        platypusBody.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 3.0)
-
-        self.addChild(platypusBody)
-
-
-    }
-
+    /**
+    *  Creates a new action to continue adding rocks, recursively
+    *
+    *  @return Void
+    */
     func addRocks() {
         if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
             let duration = self.slowMotion ? 1.36 : 0.16
@@ -535,7 +424,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
 
-
+    /**
+    *  Creates a new random powerup and sets up a reaccuring action to continue making powerups
+    *
+    *  @return Void
+    */
     func addPowerup() {
 
         var random = arc4random()
@@ -623,7 +516,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         var typeA: ColliderType = ColliderType.fromRaw(bodyA.categoryBitMask)!
         var typeB: ColliderType = ColliderType.fromRaw(bodyB.categoryBitMask)!
 
-        if (typeA == .Rock) && (typeB == .Rock) {
+        if (typeA == ColliderType.Rock) && (typeB == ColliderType.Rock) {
             bodyA.node.addChild(self.newSpark())
             bodyB.node.addChild(self.newSpark())
         } else if (typeA == .Rock || typeB == .Rock) && (typeA != .Platypus && typeB != .Platypus) {
@@ -655,6 +548,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     }
 
+    /**
+    *  Implements the functionality of the gravity powerup
+    *
+    *  @return Void
+    */
     func handleSlow() {
         self.impulseSlower = true
         let block = SKAction.runBlock({self.impulseSlower = false})
@@ -665,12 +563,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     }
 
+    /**
+    *  Creates a new spark
+    *
+    *  @return Void
+    */
     func newSpark() -> SKEmitterNode {
         let path = NSBundle.mainBundle().pathForResource("spark", ofType: "sks")
         let node: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
         return node
     }
 
+    /**
+    *  Sets the inviniciblity status and causes the platypus to fade in and out
+    *
+    *  @return Void
+    */
     func handleInvincibility() {
         self.invincible = true
         let node = self.childNodeWithName("PlatypusBody") as SKSpriteNode
@@ -682,6 +590,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
 
     }
 
+    /**
+    *  Handles the game over sequence
+    *
+    *  @return Void
+    */
     func gameOver() {
         let point = self.childNodeWithName("PlatypusBody").position
         self.timer.stop()
@@ -717,7 +630,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         self.runAction(sequence)
     }
 
-
+    /**
+    *  Reports all scores and updates all achievements
+    *
+    *  @return Void
+    */
     func doGameCenter() {
         if gameCenterEnabled {
             self.reportAchievement("Play_Space_Platypus_Once", additionalCompletion: 100.0)
@@ -740,10 +657,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
 
+    /**
+    *  Loads the leaderboard info
+    *
+    *  @return Void
+    */
     func loadLeaderboardInfo() {
         GKLeaderboard.loadLeaderboardsWithCompletionHandler({(array, error) in if array {self.leaderboards = array}})
     }
 
+    /**
+    *  Reports a given score to Game Center
+    *
+    *  @param Int64  The Score
+    *  @param String The leaderboard ID
+    *
+    *  @return Void
+    */
     func reportScore(score: Int64, leaderboardID: String) {
         let reporter = GKScore(leaderboardIdentifier: leaderboardID)
         reporter.value = score
@@ -751,6 +681,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         reporter.reportScoreWithCompletionHandler(nil)
     }
 
+    /**
+    *  Loads the Acheivements
+    *
+    *  @return Void
+    */
     func loadAchievements() {
         GKAchievement.loadAchievementsWithCompletionHandler({(array, error) in
             if !error {
@@ -761,6 +696,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
             })
     }
 
+    /**
+    *  Reports the achievement
+    *
+    *  @param String  Identifier of achievement to report
+    *  @param CDouble The ammount of additional completion to report
+    *
+    *  @return Void
+    */
     func reportAchievement(identifier: String, additionalCompletion: CDouble) {
         let achievement: GKAchievement = self.getAchievementForIdentifier(identifier)
         if achievement != nil && achievement.percentComplete != 100.0 {
@@ -769,6 +712,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
     
+    /**
+    *  Gets the achievement for the given identifier
+    *
+    *  @param String The identifier of the achievement
+    *
+    *  @return The achievement object
+    */
     func getAchievementForIdentifier(identifier: String) -> GKAchievement {
         if self.achievementsDictionary.valueForKey(identifier) {
             return self.achievementsDictionary.valueForKey(identifier) as GKAchievement
@@ -779,112 +729,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

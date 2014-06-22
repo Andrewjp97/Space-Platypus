@@ -14,12 +14,32 @@ import GameKit
 
 class CustomizeScene: SKScene {
 
+    /**
+    *  The Child of the customize scene: an optional value
+    */
     var child: CustomizeScene?
+    /**
+    *  The Parent of the customize scene: an optional value
+    */
     var parentScene: CustomizeScene?
+    /**
+    *  An array of platypus types
+    */
     var platypusTypes: kPlatypusColor[] = []
+    /**
+    *  Whether the scene's content has been created yet
+    */
     var contentCreated: Bool = false
 
-
+    /**
+    *  The designated initializer for a customize scene: recursize: creates as many children as necessary to hold all the platypus types passed in and links them together
+    *
+    *  @param CGSize            The size of the scene
+    *  @param kPlatypusColor[]  An array of platypus colors
+    *  @param CustomizeScene?   The scenes parrent if it has one
+    *
+    *  @return Void
+    */
     init(size: CGSize, platypusTypes: kPlatypusColor[], parent: CustomizeScene? = nil) {
 
 
@@ -63,26 +83,55 @@ class CustomizeScene: SKScene {
             self.backgroundColor = SKColor.blackColor()
             self.makeStars()
 
-            if self.child {
-                let rightArrow = SKSpriteNode(imageNamed: "rightArrow")
-                rightArrow.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
-                rightArrow.name = "rightArrow"
-                self.addChild(rightArrow)
+            let arrowTuple = self.makeAppropriateArrows()
+            if let right = arrowTuple.rightArrow {
+                self.addChild(right)
             }
-            if self.parentScene {
-                let leftArrow = SKSpriteNode(imageNamed: "leftArrow")
-                leftArrow.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
-                leftArrow.name = "leftArrow"
-                self.addChild(leftArrow)
-        }
+            if let left = arrowTuple.leftArrow {
+                self.addChild(left)
+            }
+        
             self.contentCreated = true
         }
     }
 
+    /**
+    *  Creates the correct arrows depending upon whether or not the scene has a parent or child scene
+    *
+    *  @return The right arrow as an optional value
+    *  @return The left arrow as an optional value
+    */
+    func makeAppropriateArrows() -> (rightArrow: SKSpriteNode?, leftArrow: SKSpriteNode?) {
+        var rightArrow: SKSpriteNode?
+        var leftArrow: SKSpriteNode?
+        
+        if self.child {
+            var node = SKSpriteNode(imageNamed: "rightArrow")
+            node.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
+            node.name = "rightArrow"
+            rightArrow = node
+            
+        }
+        
+        if self.parentScene {
+            var node = SKSpriteNode(imageNamed: "leftArrow")
+            node.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
+            node.name = "leftArrow"
+            leftArrow = node
+        }
+        
+        return (rightArrow, leftArrow)
+    }
+    
+    /**
+    *  Iterates over the platypusTypes array and lays out each platypus.
+    *
+    *  @return Void
+    */
     func layoutPlatapi() {
         var index = 0
         for type in self.platypusTypes {
-            let node: SKSpriteNode = makePlatypus(type)
+            let node: SKSpriteNode = PlatypusNode(type: type)
             switch index {
             case 0:
                 node.position = CGPointMake(CGRectGetMidX(self.frame)-80, CGRectGetMidY(self.frame) + 150)
@@ -113,14 +162,11 @@ class CustomizeScene: SKScene {
 
     }
 
-    override func update(currentTime: NSTimeInterval) {
-
-    }
     override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
         let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
 
             if node.containsPoint(touches.anyObject().locationInNode(self)) {
-                self.highlightNode(node as PlatypusSprite)
+                self.highlightNode(node as PlatypusNode)
                 return
             }
             })
@@ -156,7 +202,14 @@ class CustomizeScene: SKScene {
         self.enumerateChildNodesWithName("back", usingBlock: backButtonBlock)
     }
 
-    func highlightNode(node: PlatypusSprite) {
+    /**
+    *  Highlights a specific platypus node to queue the user into their selection
+    *
+    *  @param PlatypusNode The Node to be highlighted
+    *
+    *  @return Void
+    */
+    func highlightNode(node: PlatypusNode) {
         if let color = node.type {
             platypusColor = color
         }
@@ -176,6 +229,13 @@ class CustomizeScene: SKScene {
         self.addChild(selection)
     }
 
+    /**
+    *  Ensures that all children / parents deselect thier platypus when a new one is selected
+    *
+    *  @param Bool Should send message to children, otherwise it will be sent to parents
+    *
+    *  @return Void
+    */
     func unhighlightAnyNodes(sendToChild: Bool) {
         let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in node.removeFromParent() })
         self.enumerateChildNodesWithName("selection", usingBlock: block)
@@ -193,7 +253,11 @@ class CustomizeScene: SKScene {
 
     }
     
-
+    /**
+    *  Makes the stars in the background
+    *
+    *  @return Void
+    */
     func makeStars() {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
@@ -206,87 +270,6 @@ class CustomizeScene: SKScene {
         
     }
 
-    func newEye() -> SKSpriteNode {
-
-        let textures = [SKTexture(imageNamed: "EyeOpen"),
-            SKTexture(imageNamed: "EyeBlinking1"),
-            SKTexture(imageNamed: "EyeBlinking2"),
-            SKTexture(imageNamed: "EyeBlinking3"),
-            SKTexture(imageNamed: "EyeBlinking4"),
-            SKTexture(imageNamed: "EyeBlinking5"),
-            SKTexture(imageNamed: "EyeBlinking6"),
-            SKTexture(imageNamed: "EyeBlinking7"),
-            SKTexture(imageNamed: "EyeBlinking8"),
-            SKTexture(imageNamed: "EyeBlinking9"),
-            SKTexture(imageNamed: "EyeBlinking10"),
-            SKTexture(imageNamed: "EyeBlinking11"),
-            SKTexture(imageNamed: "EyeBlinking12"),
-            SKTexture(imageNamed: "EyeBlinking13"),
-            SKTexture(imageNamed: "EyeBlinking14"),
-            SKTexture(imageNamed: "EyeBlinking15"),
-            SKTexture(imageNamed: "EyeBlinking16"),
-            SKTexture(imageNamed: "EyeBlinking17"),
-            SKTexture(imageNamed: "EyeBlinking18"),
-            SKTexture(imageNamed: "EyeBlinking19")]
-
-        var light = SKSpriteNode(imageNamed: "EyeOpen")
-
-        var blinkClose = SKAction.animateWithTextures(textures, timePerFrame: 0.005)
-
-        var blink = SKAction.sequence([blinkClose, SKAction.waitForDuration(0.025),
-            blinkClose.reversedAction(), SKAction.waitForDuration(3.0)])
-
-        var blinkForever = SKAction.repeatActionForever(blink)
-
-        light.runAction(blinkForever)
-        
-        return  light
-        
-    }
-
-    func makePlatypus(type: kPlatypusColor) -> SKSpriteNode{
-
-        let imageName = imageNameForPlatypusColor(type)
-        var platypusBody = PlatypusSprite(imageNamed: imageName)
-        platypusBody.name = "PlatypusBody"
-        platypusBody.type = type
-        platypusBody.physicsBody = SKPhysicsBody(texture: platypusBody.texture, size: platypusBody.size)
-        platypusBody.physicsBody.dynamic = false
-//        platypusBody.physicsBody.contactTestBitMask = ColliderType.Rock.toRaw() | ColliderType.Life.toRaw()
-//        platypusBody.physicsBody.categoryBitMask = ColliderType.Platypus.toRaw()
-//        platypusBody.physicsBody.collisionBitMask = ColliderType.Rock.toRaw()
-        if type == kPlatypusColor.kPlatypusColorFire {
-
-            let path = NSBundle.mainBundle().pathForResource("bodyOnFire", ofType: "sks")
-            let flame: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-            flame.position = platypusBody.position
-            flame.zPosition = 9
-            platypusBody.addChild(flame)
-
-        }
-
-
-        let eyeOne = newEye()
-        eyeOne.position = CGPointMake(-10, 16)
-        eyeOne.zPosition = 100
-        platypusBody.addChild(eyeOne)
-
-        let eyeTwo = newEye()
-        eyeTwo.position = CGPointMake(10, 16)
-        eyeTwo.zPosition = 100
-        platypusBody.addChild(eyeTwo)
-
-        let path = NSBundle.mainBundle().pathForResource("MyParticle", ofType: "sks")
-        let exhaust: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-        exhaust.position = CGPointMake(0, -32)
-        platypusBody.addChild(exhaust)
-
-        platypusBody.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height - 100)
-        
-        return platypusBody
-        
-        
-    }
-
 }
 
+   

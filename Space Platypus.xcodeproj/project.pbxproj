@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE25070C1956583A0043A045 /* PlatypusNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE25070B1956583A0043A045 /* PlatypusNode.swift */; };
+		AE25070E19565EF80043A045 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE25070D19565EF80043A045 /* Timer.swift */; };
 		AE74DA2B194D13FC007A1EED /* Space_PlatypusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE74DA2A194D13FC007A1EED /* Space_PlatypusTests.swift */; };
+		AE879FFF195625C0003F15BD /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = AE879FFD195625C0003F15BD /* confetti.png */; };
+		AE87A00219562665003F15BD /* trees.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE87A00019562665003F15BD /* trees.sks */; };
+		AE87A00319562665003F15BD /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = AE87A00119562665003F15BD /* spark.png */; };
 		AE936691194D149000C30EB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE93667C194D149000C30EB3 /* AppDelegate.swift */; };
 		AE936692194D149000C30EB3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE93667D194D149000C30EB3 /* Main.storyboard */; };
 		AE936693194D149000C30EB3 /* bodyOnFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93667F194D149000C30EB3 /* bodyOnFire.sks */; };
@@ -40,10 +45,15 @@
 
 /* Begin PBXFileReference section */
 		AE1D94CC1951D10700FD5887 /* Random.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Random.playground; sourceTree = "<group>"; };
+		AE25070B1956583A0043A045 /* PlatypusNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatypusNode.swift; sourceTree = "<group>"; };
+		AE25070D19565EF80043A045 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		AE74DA0E194D13FC007A1EED /* Space Platypus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Space Platypus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE74DA24194D13FC007A1EED /* Space PlatypusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Space PlatypusTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE74DA29194D13FC007A1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE74DA2A194D13FC007A1EED /* Space_PlatypusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space_PlatypusTests.swift; sourceTree = "<group>"; };
+		AE879FFD195625C0003F15BD /* confetti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = confetti.png; sourceTree = "<group>"; };
+		AE87A00019562665003F15BD /* trees.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = trees.sks; sourceTree = "<group>"; };
+		AE87A00119562665003F15BD /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		AE93667C194D149000C30EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE93667E194D149000C30EB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AE93667F194D149000C30EB3 /* bodyOnFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = bodyOnFire.sks; sourceTree = "<group>"; };
@@ -89,6 +99,8 @@
 		AE74DA05194D13FC007A1EED = {
 			isa = PBXGroup;
 			children = (
+				AE87A00019562665003F15BD /* trees.sks */,
+				AE87A00119562665003F15BD /* spark.png */,
 				AEE8667B1952007900850592 /* GameKit.framework */,
 				AE1D94CC1951D10700FD5887 /* Random.playground */,
 				AE93667B194D149000C30EB3 /* Space Platypus */,
@@ -130,6 +142,8 @@
 				AE93667D194D149000C30EB3 /* Main.storyboard */,
 				AE93667F194D149000C30EB3 /* bodyOnFire.sks */,
 				AE936680194D149000C30EB3 /* CustomizeScene.swift */,
+				AE25070B1956583A0043A045 /* PlatypusNode.swift */,
+				AE25070D19565EF80043A045 /* Timer.swift */,
 				AE936681194D149000C30EB3 /* GameScene.swift */,
 				AE936682194D149000C30EB3 /* GameViewController.swift */,
 				AE936683194D149000C30EB3 /* GetGKPlayer.h */,
@@ -144,6 +158,7 @@
 				AE93668C194D149000C30EB3 /* spark.png */,
 				AE93668D194D149000C30EB3 /* spark.sks */,
 				AE93668E194D149000C30EB3 /* Stars.sks */,
+				AE879FFD195625C0003F15BD /* confetti.png */,
 				AE93668F194D149000C30EB3 /* tail.sks */,
 				AE936690194D149000C30EB3 /* WelcomeScene.swift */,
 			);
@@ -241,11 +256,14 @@
 				AE93669B194D149000C30EB3 /* MyParticle.sks in Resources */,
 				AE93669D194D149000C30EB3 /* smallExplosion.sks in Resources */,
 				AE936698194D149000C30EB3 /* Images.xcassets in Resources */,
+				AE87A00319562665003F15BD /* spark.png in Resources */,
 				AE9366A0194D149000C30EB3 /* Stars.sks in Resources */,
 				AE936693194D149000C30EB3 /* bodyOnFire.sks in Resources */,
 				AE93669E194D149000C30EB3 /* spark.png in Resources */,
 				AE936692194D149000C30EB3 /* Main.storyboard in Resources */,
 				AE93669A194D149000C30EB3 /* MyExplosion.sks in Resources */,
+				AE879FFF195625C0003F15BD /* confetti.png in Resources */,
+				AE87A00219562665003F15BD /* trees.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +286,8 @@
 				AE936695194D149000C30EB3 /* GameScene.swift in Sources */,
 				AE936694194D149000C30EB3 /* CustomizeScene.swift in Sources */,
 				AE936691194D149000C30EB3 /* AppDelegate.swift in Sources */,
+				AE25070C1956583A0043A045 /* PlatypusNode.swift in Sources */,
+				AE25070E19565EF80043A045 /* Timer.swift in Sources */,
 				AE936697194D149000C30EB3 /* GetGKPlayer.m in Sources */,
 				AE93669C194D149000C30EB3 /* OptionsScene.swift in Sources */,
 			);

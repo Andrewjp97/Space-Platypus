@@ -9,7 +9,9 @@
 import SpriteKit
 import GameKit
 
-
+/**
+*  The enumeration for the different menu item types
+*/
 enum kMeunItemType: Int {
     case kMenuItemTypePlay = 1, //Play Butten
     kMenuItemTypeCustomize,  //Customize Button
@@ -19,8 +21,27 @@ enum kMeunItemType: Int {
     kMenuItemTypeInvalid  //Touch is outside valid range
 }
 
+/**
+*  The enumeration for the collision types
+*/
+enum ColliderType: UInt32 {
+    case Rock = 1
+    case Life = 2
+    case Platypus = 4
+    case Gravity = 8
+    case Shield = 16
+}
+
+
 var lastRandom: Double = 0
 
+/**
+*  A random number generator
+*
+*  @param Double The Maximum allowable value
+*
+*  @return The random number
+*/
 func randomNumberFunction(max: Double) -> Double {
     if lastRandom == 0 {
         lastRandom = NSDate.timeIntervalSinceReferenceDate()
@@ -33,25 +54,10 @@ func randomNumberFunction(max: Double) -> Double {
 class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDelegate {
 
     var contentCreated: Bool = false
-    var midScreenY: CGFloat = 0.0
-    var color: kPlatypusColor = platypusColor
-    var counter: Int = 0
 
     init(size: CGSize) {
         super.init(size: size)
-        self.midScreenY = CGRectGetMidY(self.frame)
     }
-
-    enum ColliderType: UInt32 {
-        case Rock = 1
-        case Life = 2
-        case Platypus = 4
-        case Gravity = 8
-        case Shield = 16
-    }
-
-
-
 
     override func didMoveToView(view: SKView) {
 
@@ -116,11 +122,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
-    override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-
-    }
-
+    /**
+    *  Checks for rocks offscreen and removes them
+    *
+    *  @return Void
+    */
     override func didSimulatePhysics() {
 
         let completionBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = {incoming, stop in
@@ -139,25 +145,24 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
-    func didBeginContact(contact: SKPhysicsContact!) {
-
-    }
-
-    func didEndContact(contact: SKPhysicsContact!)
-    {
-
-    }
-
-    
-
-
-
+    /**
+    *  The Game Center Delegate Callback Method: Called when the controller is dismissed
+    *
+    *  @param GKGameCenterViewController! The controller being dismissed
+    *
+    *  @return Void
+    */
     func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!) {
 
         self.view.window.rootViewController.dismissViewControllerAnimated(true, completion: nil)
 
     }
 
+    /**
+    *  Creates the scene content
+    *
+    *  @return Void
+    */
     func createSceneContent() {
 
         self.backgroundColor = SKColor.blackColor()
@@ -165,12 +170,21 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
         self.makeStars()
         self.makeMenuNodes()
-        self.makePlatypus()
+        
+        let platypus = PlatypusNode(type: platypusColor)
+        platypus.position  = CGPointMake(self.frame.size.width / 2, self.frame.size.height - 100)
+        self.addChild(platypus)
+        
         self.playSpaceship()
         self.addRocks()
 
     }
 
+    /**
+    *  Runs a sequence of actions that move the platypus around on the scene
+    *
+    *  @return Void
+    */
     func playSpaceship() {
 
         let action1 = SKAction.moveBy(CGVectorMake(85, 10.0), duration: 0.5)
@@ -191,6 +205,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         
     }
 
+    /**
+    *  Creates and adds a rock to the scene at a random point along the top of the screen and applies an impulse to it
+    *
+    *  @return Void
+    */
     func addRock() {
         let rock = SKSpriteNode(color: SKColor(red: 0.67647, green:0.51568, blue:0.29216, alpha:1.0), size: CGSizeMake(8, 8))
 
@@ -214,6 +233,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
+    /**
+    *  Creates the stars in the scene's background
+    *
+    *  @return Void
+    */
     func makeStars() {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
@@ -226,6 +250,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
+    /**
+    *  Creates the menu nodes for the scene
+    *
+    *  @return Void
+    */
     func makeMenuNodes() {
 
         var helloNode = SKLabelNode()
@@ -290,44 +319,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
-    func newEye() -> SKSpriteNode {
-
-        let textures = [SKTexture(imageNamed: "EyeOpen"),
-            SKTexture(imageNamed: "EyeBlinking1"),
-            SKTexture(imageNamed: "EyeBlinking2"),
-            SKTexture(imageNamed: "EyeBlinking3"),
-            SKTexture(imageNamed: "EyeBlinking4"),
-            SKTexture(imageNamed: "EyeBlinking5"),
-            SKTexture(imageNamed: "EyeBlinking6"),
-            SKTexture(imageNamed: "EyeBlinking7"),
-            SKTexture(imageNamed: "EyeBlinking8"),
-            SKTexture(imageNamed: "EyeBlinking9"),
-            SKTexture(imageNamed: "EyeBlinking10"),
-            SKTexture(imageNamed: "EyeBlinking11"),
-            SKTexture(imageNamed: "EyeBlinking12"),
-            SKTexture(imageNamed: "EyeBlinking13"),
-            SKTexture(imageNamed: "EyeBlinking14"),
-            SKTexture(imageNamed: "EyeBlinking15"),
-            SKTexture(imageNamed: "EyeBlinking16"),
-            SKTexture(imageNamed: "EyeBlinking17"),
-            SKTexture(imageNamed: "EyeBlinking18"),
-            SKTexture(imageNamed: "EyeBlinking19")]
-
-        var light = SKSpriteNode(imageNamed: "EyeOpen")
-
-        var blinkClose = SKAction.animateWithTextures(textures, timePerFrame: 0.005)
-
-        var blink = SKAction.sequence([blinkClose, SKAction.waitForDuration(0.025),
-            blinkClose.reversedAction(), SKAction.waitForDuration(3.0)])
-
-        var blinkForever = SKAction.repeatActionForever(blink)
-
-        light.runAction(blinkForever)
-
-        return  light
-
-    }
-
+    /**
+    *  Shows the Game Center Leaderboards
+    *
+    *  @return Void
+    */
     func showLeaderboard() {
 
         let controller = GKGameCenterViewController()
@@ -337,6 +333,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
+    /**
+    *  Shows the Game Center Achievments
+    *
+    *  @return Void
+    */
     func showAchievements() {
 
         let controller = GKGameCenterViewController()
@@ -346,50 +347,11 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     }
 
-    func makePlatypus() {
-
-        let imageName = imageNameForPlatypusColor(color)
-        var platypusBody = SKSpriteNode(imageNamed: imageName)
-        platypusBody.name = "PlatypusBody"
-
-        platypusBody.physicsBody = SKPhysicsBody(texture: platypusBody.texture, size: platypusBody.size)
-        platypusBody.physicsBody.dynamic = false
-        platypusBody.physicsBody.contactTestBitMask = ColliderType.Rock.toRaw() | ColliderType.Life.toRaw()
-        platypusBody.physicsBody.categoryBitMask = ColliderType.Platypus.toRaw()
-        platypusBody.physicsBody.collisionBitMask = ColliderType.Rock.toRaw()
-        if color == kPlatypusColor.kPlatypusColorFire {
-
-            let path = NSBundle.mainBundle().pathForResource("bodyOnFire", ofType: "sks")
-            let flame: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-            flame.position = platypusBody.position
-            flame.zPosition = 9
-            platypusBody.addChild(flame)
-
-        }
-
-
-        let eyeOne = newEye()
-        eyeOne.position = CGPointMake(-10, 16)
-        eyeOne.zPosition = 100
-        platypusBody.addChild(eyeOne)
-
-        let eyeTwo = newEye()
-        eyeTwo.position = CGPointMake(10, 16)
-        eyeTwo.zPosition = 100
-        platypusBody.addChild(eyeTwo)
-
-        let path = NSBundle.mainBundle().pathForResource("MyParticle", ofType: "sks")
-        let exhaust: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
-        exhaust.position = CGPointMake(0, -32)
-        platypusBody.addChild(exhaust)
-
-        platypusBody.position = CGPointMake(self.frame.size.width / 2, self.frame.size.height - 100)
-
-        self.addChild(platypusBody)
-
-
-    }
-
+    /**
+    *  Creates the falling rocks in the scene: creates a repeating action to make rocks
+    *
+    *  @return Void
+    */
     func addRocks() {
         
             let duration = 0.10
@@ -402,8 +364,17 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         
     }
 
+    /**
+    *  Determines what, if any menu item is at the given point
+    *
+    *  @param CGPoint The point to check
+    *
+    *  @return The type of menu item present, returns kMenuItemTypeInvalid if no menu item is present at the given point
+    */
     func whatMenuItemTypeIsAtPoint(point: CGPoint) -> kMeunItemType {
 
+        let midScreenY = CGRectGetMidY(self.frame)
+        
         if point.y > (midScreenY - 54.0) && point.y < (midScreenY - 18.0) {
             return .kMenuItemTypePlay
         } else if point.y > (midScreenY - 90) && point.y < (midScreenY - 54) {

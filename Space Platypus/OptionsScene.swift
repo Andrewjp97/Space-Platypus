@@ -12,6 +12,9 @@ import GameKit
 
 class OptionsScene: SKScene {
 
+    /**
+    *  Value of whether or not the scene content has been created yet
+    */
     var contentCreated: Bool = false
 
     override func didMoveToView(view: SKView!) {
@@ -19,37 +22,62 @@ class OptionsScene: SKScene {
         if !self.contentCreated {
             self.makeStars()
             self.backgroundColor = SKColor.blackColor()
-            // If motion is enabled, make the button green.  Otherwise, make it red.
-            let node = SKSpriteNode(color: motionEnabled ? SKColor.greenColor() : SKColor.redColor(),
-                                                                            size: CGSizeMake(250, 100))
-            node.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-            node.name = "button"
+            
 
-            let text = SKLabelNode(fontNamed: "Helvetica")
-            text.text = motionEnabled ? "Disable Motion Control" : "Enable Motion Control"
-            text.fontColor = SKColor.whiteColor()
-            text.zPosition = node.zPosition + 1
-            text.fontSize = 20
-            text.name = "text"
-            text.position = node.position
-            text.position.y = text.position.y - 10
+            let buttonTuple = self.createButton()
+            self.addChild(buttonTuple.button)
+            self.addChild(buttonTuple.text)
 
-            self.addChild(text)
-            self.addChild(node)
-
-            let backButton = SKLabelNode(fontNamed: "Helvetica")
-            backButton.text = "Back"
-            backButton.name = "back"
-            backButton.fontColor = SKColor.whiteColor()
-            backButton.fontSize = 24
-            backButton.position = CGPointMake(10 + (0.5 * backButton.frame.size.width), CGRectGetMaxY(self.frame) - 20 - (0.5 * backButton.frame.size.height))
-            self.addChild(backButton)
-
+            self.addChild(self.createBackButton())
+            
             self.contentCreated = true
         }
 
     }
 
+    /**
+    *  Creates a fully formed instance of a back button text label
+    *
+    *  @return The fully formed back button label
+    */
+    func createBackButton() -> SKLabelNode {
+        
+        let backButton = SKLabelNode(fontNamed: "Helvetica")
+        backButton.text = "Back"
+        backButton.name = "back"
+        backButton.fontColor = SKColor.whiteColor()
+        backButton.fontSize = 24
+        backButton.position = CGPointMake(10 + (0.5 * backButton.frame.size.width), CGRectGetMaxY(self.frame) - 20 - (0.5 * backButton.frame.size.height))
+        
+        return backButton
+        
+    }
+    
+    /**
+    *  A Function to create a large button that's color dpends upon the global motion variable and whose text depends upon the global motion variable
+    *
+    *  @return The button portion of the button
+    *  @return The text portion of the button
+    */
+    func createButton() -> (button: SKSpriteNode, text: SKLabelNode) {
+        
+        // If motion is enabled, make the button green.  Otherwise, make it red.
+
+        let node = SKSpriteNode(color: motionEnabled ? SKColor.greenColor() : SKColor.redColor(),size: CGSizeMake(250, 100))
+        node.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        node.name = "button"
+        
+        let text = SKLabelNode(fontNamed: "Helvetica")
+        text.text = motionEnabled ? "Disable Motion Control" : "Enable Motion Control"
+        text.fontColor = SKColor.whiteColor()
+        text.zPosition = node.zPosition + 1
+        text.fontSize = 20
+        text.name = "text"
+        text.position = node.position
+        text.position.y = text.position.y - 10
+        
+        return (node, text)
+    }
 
     override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
 
@@ -97,6 +125,9 @@ class OptionsScene: SKScene {
 
     }
 
+    /**
+    *  Creates The Stars in the background
+    */
     func makeStars() {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")

@@ -11,7 +11,37 @@ import UIKit
 import SpriteKit
 import GameKit
 
+/**
+*  The Extension on Double that defines a property CGFloatValue
+*/
+extension Double {
+    /**
+    *  The number as a CGFloat
+    */
+    var CGFloatValue: CGFloat {
+    get {
+        return CGFloat(self)
+    }
+    }
+}
 
+/**
+*  The Extension on Int that defines a property CGFloatValue
+*/
+extension Int {
+    /**
+    *  The number as a CGFloat
+    */
+    var CGFloatValue: CGFloat {
+    get {
+        return CGFloat(self)
+    }
+    }
+}
+
+/**
+*  The Enumeration Defining the Types of Platypus
+*/
 enum kPlatypusColor: Int {
         case kPlatypusColorDefault = 1,
         kPlatypusColorRed,
@@ -27,6 +57,13 @@ enum kPlatypusColor: Int {
         kPlatypusColorFire
     }
 
+/**
+*  Converts a Platypus Type into an image name
+*
+*  @param kPlatypusColor The Platypus Type you want an image name for
+*
+*  @return The image name for the given platypus type
+*/
 func imageNameForPlatypusColor(color: kPlatypusColor) -> String {
     switch color {
     case .kPlatypusColorDefault:
@@ -57,6 +94,13 @@ func imageNameForPlatypusColor(color: kPlatypusColor) -> String {
 
 }
 
+/**
+*  Converts a Platypus Type to the name used to store preferences in NSUserDefaults
+*
+*  @param kPlatypusColor The Platypus Type for which you would like the defaults value
+*
+*  @return The Value for NSUser Defaults for the given platypus type
+*/
 func stringForPlatypusType(type: kPlatypusColor) -> String {
     switch type {
     case .kPlatypusColorDefault:
@@ -86,17 +130,24 @@ func stringForPlatypusType(type: kPlatypusColor) -> String {
     }
 }
 
+/**
+*  The Global Platypus Color: Auto updates NSUserDefaults upon setting
+*/
 var platypusColor: kPlatypusColor = .kPlatypusColorDefault{
     willSet{
         NSUserDefaults.standardUserDefaults().setObject(stringForPlatypusType(newValue), forKey: "platypusColor")
     }
 }
 
+/**
+*  The Global Determination of wheter or not motion control is enabled: Auto updates NSUserDefaults upon setting
+*/
 var motionEnabled: Bool = false {
     willSet {
         NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "motion")
     }
 }
+
 var gameCenterEnabled: Bool = true {
     willSet {
         if !NSUserDefaults.standardUserDefaults().boolForKey("value") {
@@ -117,6 +168,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     init() {
+        
+        // Get Stored Values from NSUserDefaults 
+        
         motionEnabled = NSUserDefaults.standardUserDefaults().boolForKey("motion")
         //gameCenterEnabled = NSUserDefaults.standardUserDefaults().boolForKey("gk")
         // if NSUserDefaults.standardUserDefaults().objectForKey("test") as String != "yes" {
@@ -163,7 +217,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         // Override point for customization after application launch.
-        
         return true
     }
 
