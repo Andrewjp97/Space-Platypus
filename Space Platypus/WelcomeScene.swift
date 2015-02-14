@@ -55,8 +55,12 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
 
     var contentCreated: Bool = false
 
-    init(size: CGSize) {
+    override init(size: CGSize) {
         super.init(size: size)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 
     override func didMoveToView(view: SKView) {
@@ -67,7 +71,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
             contentCreated = true
 
             UIApplication.sharedApplication().statusBarStyle = .LightContent
-            self.view.userInteractionEnabled = true
+            self.view?.userInteractionEnabled = true
 
             self.physicsWorld.contactDelegate = self
 
@@ -77,8 +81,8 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-
-        let point = touches.anyObject().locationInNode(self)
+        let touch = touches.anyObject() as UITouch
+        let point = touch.locationInNode(self)
 
         let menuItemType = whatMenuItemTypeIsAtPoint(point)
 
@@ -87,15 +91,15 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
             case .kMenuItemTypePlay:
                 let helloNode = self.childNodeWithName("HelloNode")
                 if helloNode != nil {
-                    helloNode.name = nil
+                    helloNode?.name = nil
                     let zoom = SKAction.scaleTo(0.05, duration: 0.5)
                     let fade = SKAction.fadeOutWithDuration(0.5)
                     let remove = SKAction.removeFromParent()
                     let sequence = SKAction.sequence([zoom, fade, remove])
-                    helloNode.runAction(sequence, completion: ({
+                    helloNode?.runAction(sequence, completion: ({
                         let scene = GameScene(size: self.size)
                         let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
-                        self.view.presentScene(scene, transition: doors)
+                        self.view?.presentScene(scene, transition: doors)
                         }))
                 }
             case .kMenuItemTypeCustomize:
@@ -106,7 +110,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
                                     .kPlatypusColorChirstmasTree, .kPlatypusColorRaindeer, .kPlatypusColorFire])
                 
                 let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
-                self.view.presentScene(scene, transition: doors)
+                self.view?.presentScene(scene, transition: doors)
             case .kMenuItemTypeScores:
                 self.showLeaderboard()
             case .kMenuItemTypeAchievements:
@@ -114,7 +118,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
             case .kMenuItemTypeOptions:
                 let scene = OptionsScene(size: self.size)
                 let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
-                self.view.presentScene(scene, transition: doors)
+                self.view?.presentScene(scene, transition: doors)
             case .kMenuItemTypeInvalid:
                 return
 
@@ -129,7 +133,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
     */
     override func didSimulatePhysics() {
 
-        let completionBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = {incoming, stop in
+        let completionBlock: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = {incoming, stop in
 
             if let node = incoming {
 
@@ -154,7 +158,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
     */
     func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!) {
 
-        self.view.window.rootViewController.dismissViewControllerAnimated(true, completion: nil)
+        self.view?.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
 
     }
 
@@ -201,7 +205,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         let repeat = SKAction.repeatActionForever(sequence)
 
         let platypus = self.childNodeWithName("PlatypusBody")
-        platypus.runAction(repeat)
+        platypus?.runAction(repeat)
         
     }
 
@@ -214,7 +218,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         let rock = SKSpriteNode(color: SKColor(red: 0.67647, green:0.51568, blue:0.29216, alpha:1.0), size: CGSizeMake(8, 8))
 
         let width: CGFloat = CGRectGetWidth(self.frame)
-        let widthAsDouble: Double = width.bridgeToObjectiveC().doubleValue
+        let widthAsDouble: Double = Double(width)
         let randomNum = randomNumberFunction(widthAsDouble)
         let randomNumAsCGFloat: CGFloat = randomNum.CGFloatValue
         let point = CGPointMake(randomNumAsCGFloat, CGRectGetHeight(self.frame))
@@ -222,13 +226,12 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         rock.position = point
         rock.name = "rock"
         rock.physicsBody = SKPhysicsBody(rectangleOfSize: rock.size)
-        rock.physicsBody.usesPreciseCollisionDetection = true
-        rock.physicsBody.categoryBitMask = ColliderType.Rock.toRaw()
-        rock.physicsBody.contactTestBitMask = ColliderType.Rock.toRaw() | ColliderType.Shield.toRaw()
-        rock.physicsBody.collisionBitMask = ColliderType.Rock.toRaw() | ColliderType.Platypus.toRaw()
-
+        rock.physicsBody?.usesPreciseCollisionDetection = true
+        rock.physicsBody?.categoryBitMask = ColliderType.Rock.rawValue
+        rock.physicsBody?.contactTestBitMask = ColliderType.Rock.rawValue | ColliderType.Shield.rawValue
+        rock.physicsBody?.collisionBitMask = ColliderType.Rock.rawValue | ColliderType.Platypus.rawValue
         self.addChild(rock)
-        rock.physicsBody.applyImpulse(CGVectorMake(0, -0.75))
+        rock.physicsBody?.applyImpulse(CGVectorMake(0, -0.75))
 
 
     }
@@ -241,7 +244,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
     func makeStars() {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
-        let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as SKEmitterNode
         stars.particlePosition = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame))
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2
@@ -329,7 +332,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         let controller = GKGameCenterViewController()
         controller.gameCenterDelegate = self;
         controller.viewState = .Leaderboards
-        self.view.window.rootViewController.presentModalViewController(controller, animated: true)
+        self.view?.window?.rootViewController?.presentViewController(controller, animated: true, completion: nil)
 
     }
 
@@ -343,7 +346,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
         let controller = GKGameCenterViewController()
         controller.gameCenterDelegate = self
         controller.viewState  = .Achievements
-        self.view.window.rootViewController.presentModalViewController(controller, animated: true)
+        self.view?.window?.rootViewController?.presentViewController(controller, animated: true, completion: nil)
 
     }
 

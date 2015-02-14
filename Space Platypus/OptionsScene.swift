@@ -17,7 +17,7 @@ class OptionsScene: SKScene {
     */
     var contentCreated: Bool = false
 
-    override func didMoveToView(view: SKView!) {
+    override func didMoveToView(view: SKView) {
 
         if !self.contentCreated {
             self.makeStars()
@@ -79,13 +79,15 @@ class OptionsScene: SKScene {
         return (node, text)
     }
 
-    override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
 
-        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
-
-            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+        let block: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            let touch = touches.anyObject() as UITouch
+            if node.containsPoint(touch.locationInNode(self)) {
                 node.removeFromParent()
-                self.removeChildrenInArray([self.childNodeWithName("text")])
+                var name = "text"
+                var arr = [name]
+                self.removeChildrenInArray(arr)
 
                 motionEnabled = !motionEnabled
 
@@ -113,10 +115,11 @@ class OptionsScene: SKScene {
 
         self.enumerateChildNodesWithName("button", usingBlock: block)
 
-        let backButtonBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
-            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+        let backButtonBlock: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            let touch = touches.anyObject() as UITouch
+            if node.containsPoint(touch.locationInNode(self)) {
                 let transition = SKTransition.doorsCloseVerticalWithDuration(0.5)
-                self.scene.view.presentScene(WelcomeScene(size: self.size), transition: transition)
+                self.scene?.view?.presentScene(WelcomeScene(size: self.size), transition: transition)
             }
             })
 
@@ -131,7 +134,7 @@ class OptionsScene: SKScene {
     func makeStars() {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
-        let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as SKEmitterNode
         stars.particlePosition = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame))
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2

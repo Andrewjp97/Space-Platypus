@@ -25,7 +25,6 @@
 		AE93669B194D149000C30EB3 /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE936688194D149000C30EB3 /* MyParticle.sks */; };
 		AE93669C194D149000C30EB3 /* OptionsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936689194D149000C30EB3 /* OptionsScene.swift */; };
 		AE93669D194D149000C30EB3 /* smallExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668A194D149000C30EB3 /* smallExplosion.sks */; };
-		AE93669E194D149000C30EB3 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = AE93668C194D149000C30EB3 /* spark.png */; };
 		AE93669F194D149000C30EB3 /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668D194D149000C30EB3 /* spark.sks */; };
 		AE9366A0194D149000C30EB3 /* Stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668E194D149000C30EB3 /* Stars.sks */; };
 		AE9366A1194D149000C30EB3 /* tail.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668F194D149000C30EB3 /* tail.sks */; };
@@ -259,7 +258,6 @@
 				AE87A00319562665003F15BD /* spark.png in Resources */,
 				AE9366A0194D149000C30EB3 /* Stars.sks in Resources */,
 				AE936693194D149000C30EB3 /* bodyOnFire.sks in Resources */,
-				AE93669E194D149000C30EB3 /* spark.png in Resources */,
 				AE936692194D149000C30EB3 /* Main.storyboard in Resources */,
 				AE93669A194D149000C30EB3 /* MyExplosion.sks in Resources */,
 				AE879FFF195625C0003F15BD /* confetti.png in Resources */,

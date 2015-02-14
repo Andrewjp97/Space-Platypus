@@ -167,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    init() {
+    override init() {
         
         // Get Stored Values from NSUserDefaults 
         

@@ -41,7 +41,7 @@ class GameViewController: UIViewController {
     }
 
     override func supportedInterfaceOrientations() -> Int {
-        return UIInterfaceOrientation.Portrait.toRaw()
+        return UIInterfaceOrientation.Portrait.rawValue
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,7 +58,7 @@ class GameViewController: UIViewController {
             let handler: (UIViewController!, NSError!) -> Void = ({(controller, error) in
 
                 if controller != nil {
-                    self.view.window.rootViewController.presentModalViewController(controller, animated: true)
+                    self.view.window?.rootViewController?.presentViewController(controller, animated: true, completion: nil)
                 } else {
                     gameCenterEnabled = false
                 }

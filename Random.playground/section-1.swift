@@ -18,7 +18,7 @@ for var i = 0; i <= 100; i++ {
     arc4random() % 1000
 }
 
-var arr: Double[] = []
+var arr: [Double] = []
 for var i = 0; i <= 1000; i++ {
     let num = randomNumberFunction(680)
     arr.append(num)

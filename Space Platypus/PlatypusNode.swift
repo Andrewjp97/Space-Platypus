@@ -16,6 +16,10 @@ class PlatypusNode: SKSpriteNode {
     */
     var type: kPlatypusColor?
     
+    override init(texture: SKTexture!, color: UIColor!, size: CGSize) {
+        super.init(texture: texture, color: color, size: size)
+    }
+    
     /**
     *  Designated Initializer for a PlatypusNode
     *
@@ -23,22 +27,26 @@ class PlatypusNode: SKSpriteNode {
     */
     init(type: kPlatypusColor) {
         
-        super.init(imageNamed: imageNameForPlatypusColor(type))
-        
+        //super.init(imageNamed: imageNameForPlatypusColor(type))
+        super.init()
+        self.texture = SKTexture(imageNamed: imageNameForPlatypusColor(type))
+        if let texture = self.texture {
+            self.size = texture.size()
+        }
         self.type = type
         
         self.name = "PlatypusBody"
         
-        self.physicsBody = SKPhysicsBody(texture: self.texture, size: self.size)
-        self.physicsBody.dynamic = false
-        self.physicsBody.contactTestBitMask = ColliderType.Rock.toRaw() | ColliderType.Life.toRaw()
-        self.physicsBody.categoryBitMask = ColliderType.Platypus.toRaw()
-        self.physicsBody.collisionBitMask = ColliderType.Rock.toRaw()
+        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size)
+        self.physicsBody?.dynamic = false
+        self.physicsBody?.contactTestBitMask = ColliderType.Rock.rawValue | ColliderType.Life.rawValue
+        self.physicsBody?.categoryBitMask = ColliderType.Platypus.rawValue
+        self.physicsBody?.collisionBitMask = ColliderType.Rock.rawValue
         
         if type == kPlatypusColor.kPlatypusColorFire {
             
             let path = NSBundle.mainBundle().pathForResource("bodyOnFire", ofType: "sks")
-            let flame: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+            let flame: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as SKEmitterNode
             flame.position = self.position
             flame.zPosition = 9
             self.addChild(flame)
@@ -56,10 +64,14 @@ class PlatypusNode: SKSpriteNode {
         self.addChild(eyeTwo)
         
         let path = NSBundle.mainBundle().pathForResource("MyParticle", ofType: "sks")
-        let exhaust: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        let exhaust: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as SKEmitterNode
         exhaust.position = CGPointMake(0, -32)
         self.addChild(exhaust)
 
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
     }
     
     /**

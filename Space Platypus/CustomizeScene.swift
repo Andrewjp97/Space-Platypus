@@ -25,7 +25,7 @@ class CustomizeScene: SKScene {
     /**
     *  An array of platypus types
     */
-    var platypusTypes: kPlatypusColor[] = []
+    var platypusTypes: [kPlatypusColor] = []
     /**
     *  Whether the scene's content has been created yet
     */
@@ -40,7 +40,7 @@ class CustomizeScene: SKScene {
     *
     *  @return Void
     */
-    init(size: CGSize, platypusTypes: kPlatypusColor[], parent: CustomizeScene? = nil) {
+    init(size: CGSize, platypusTypes: [kPlatypusColor], parent: CustomizeScene? = nil) {
 
 
         // Call Superclass initializer
@@ -57,7 +57,7 @@ class CustomizeScene: SKScene {
         // then send the rest to a new instance and call it our child.  (Like a doubly linked list data structure)
         if platypusTypes.count > 6
         {
-            var subarray: kPlatypusColor[] = []
+            var subarray: [kPlatypusColor] = []
             var counter: Int = 0
             for platypusType in platypusTypes {
                 if counter < 6 {
@@ -77,7 +77,11 @@ class CustomizeScene: SKScene {
 
     }
 
-    override func didMoveToView(view: SKView!) {
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override func didMoveToView(view: SKView) {
         if !self.contentCreated {
             self.layoutPlatapi()
             self.backgroundColor = SKColor.blackColor()
@@ -105,7 +109,7 @@ class CustomizeScene: SKScene {
         var rightArrow: SKSpriteNode?
         var leftArrow: SKSpriteNode?
         
-        if self.child {
+        if self.child != nil {
             var node = SKSpriteNode(imageNamed: "rightArrow")
             node.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
             node.name = "rightArrow"
@@ -113,7 +117,7 @@ class CustomizeScene: SKScene {
             
         }
         
-        if self.parentScene {
+        if self.parentScene != nil {
             var node = SKSpriteNode(imageNamed: "leftArrow")
             node.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
             node.name = "leftArrow"
@@ -162,40 +166,43 @@ class CustomizeScene: SKScene {
 
     }
 
-    override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
-        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
-
-            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        
+        self.enumerateChildNodesWithName("PlatypusBody", usingBlock: {(node, stop) in
+            let touch = touches.anyObject() as UITouch
+            if (node.containsPoint(touch.locationInNode(self))) {
                 self.highlightNode(node as PlatypusNode)
                 return
             }
-            })
-        self.enumerateChildNodesWithName("PlatypusBody", usingBlock: block)
+        })
 
-        let leftArrowBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
-            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+        let leftArrowBlock: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            let touch = touches.anyObject() as UITouch
+            if (node.containsPoint(touch.locationInNode(self))) {
                 let transition = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 0.25)
-                self.scene.view.presentScene(self.parentScene, transition: transition)
+                self.scene?.view!.presentScene(self.parentScene, transition: transition)
                 return
             }
         })
 
         self.enumerateChildNodesWithName("leftArrow", usingBlock: leftArrowBlock)
 
-        let rightArrowBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
-            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+        let rightArrowBlock: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            let touch = touches.anyObject() as UITouch
+            if (node.containsPoint(touch.locationInNode(self))) {
                 let transition = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 0.25)
-                self.scene.view.presentScene(self.child, transition: transition)
+                self.scene?.view!.presentScene(self.child, transition: transition)
                 return
             }
         })
 
         self.enumerateChildNodesWithName("rightArrow", usingBlock: rightArrowBlock)
 
-        let backButtonBlock: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
-            if node.containsPoint(touches.anyObject().locationInNode(self)) {
+        let backButtonBlock: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({(node, stop) in
+            let touch = touches.anyObject() as UITouch
+            if (node.containsPoint(touch.locationInNode(self))) {
                 let transition = SKTransition.doorsCloseVerticalWithDuration(0.5)
-                self.scene.view.presentScene(WelcomeScene(size: self.size), transition: transition)
+                self.scene?.view!.presentScene(WelcomeScene(size: self.size), transition: transition)
             }
         })
 
@@ -219,7 +226,7 @@ class CustomizeScene: SKScene {
         if let node = self.parentScene {
             node.unhighlightAnyNodes(false)
         }
-        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({ (node, stop) in node.removeFromParent() })
+        let block: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({ (node, stop) in node.removeFromParent() })
         self.enumerateChildNodesWithName("selection", usingBlock: block)
         let selection = SKSpriteNode(imageNamed: "BackgroundSelected")
         selection.name = "selection"
@@ -237,7 +244,7 @@ class CustomizeScene: SKScene {
     *  @return Void
     */
     func unhighlightAnyNodes(sendToChild: Bool) {
-        let block: (SKNode!, CMutablePointer<ObjCBool>) -> Void = ({(node, stop) in node.removeFromParent() })
+        let block: (SKNode!, UnsafeMutablePointer<ObjCBool>) -> Void = ({(node, stop) in node.removeFromParent() })
         self.enumerateChildNodesWithName("selection", usingBlock: block)
         // Recursion: if this message came from a parent, we want to send it down the chain of children
         if sendToChild {
@@ -261,7 +268,7 @@ class CustomizeScene: SKScene {
     func makeStars() {
 
         let path = NSBundle.mainBundle().pathForResource("Stars", ofType: "sks")
-        let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as SKEmitterNode
+        let stars: SKEmitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as SKEmitterNode
         stars.particlePosition = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame))
         stars.particlePositionRange = CGVectorMake(CGRectGetWidth(self.frame), 0)
         stars.zPosition = -2
