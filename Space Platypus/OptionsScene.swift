@@ -26,6 +26,7 @@ class OptionsScene: SKScene {
 
             let buttonTuple = self.createButton()
             self.addChild(buttonTuple.button)
+            buttonTuple.text.name = "text"
             self.addChild(buttonTuple.text)
 
             self.addChild(self.createBackButton())
@@ -68,7 +69,7 @@ class OptionsScene: SKScene {
         node.name = "button"
         
         let text = SKLabelNode(fontNamed: "Helvetica")
-        text.text = motionEnabled ? "Disable Motion Control" : "Enable Motion Control"
+        text.text = motionEnabled ? "Motion Control Enabled" : "Motion Control Disabled"
         text.fontColor = SKColor.whiteColor()
         text.zPosition = node.zPosition + 1
         text.fontSize = 20
@@ -86,7 +87,14 @@ class OptionsScene: SKScene {
             if node.containsPoint(touch.locationInNode(self)) {
                 node.removeFromParent()
                 var name = "text"
-                var arr = [name]
+                var sprite: SKNode
+                if let tempSprite = self.childNodeWithName(name) {
+                    sprite = tempSprite
+                }
+                else {
+                    sprite = SKNode()
+                }
+                var arr = [sprite]
                 self.removeChildrenInArray(arr)
 
                 motionEnabled = !motionEnabled
@@ -97,7 +105,7 @@ class OptionsScene: SKScene {
                 newNode.name = "button"
 
                 let text = SKLabelNode(fontNamed: "Helvetica")
-                text.text = motionEnabled ? "Disable Motion Control" : "Enable Motion Control"
+                text.text = motionEnabled ? "Motion Control Enabled" : "Motion Control Disabled"
                 text.fontColor = SKColor.whiteColor()
                 text.zPosition = newNode.zPosition + 1
                 text.fontSize = 20
