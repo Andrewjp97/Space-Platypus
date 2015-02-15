@@ -29,6 +29,7 @@
 		AE9366A0194D149000C30EB3 /* Stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668E194D149000C30EB3 /* Stars.sks */; };
 		AE9366A1194D149000C30EB3 /* tail.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668F194D149000C30EB3 /* tail.sks */; };
 		AE9366A2194D149000C30EB3 /* WelcomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936690194D149000C30EB3 /* WelcomeScene.swift */; };
+		AEE3F92A1A90E538004103E6 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE3F9291A90E538004103E6 /* Crashlytics.framework */; };
 		AEE8667C1952007900850592 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE8667B1952007900850592 /* GameKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		AE93668E194D149000C30EB3 /* Stars.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Stars.sks; sourceTree = "<group>"; };
 		AE93668F194D149000C30EB3 /* tail.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = tail.sks; sourceTree = "<group>"; };
 		AE936690194D149000C30EB3 /* WelcomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScene.swift; sourceTree = "<group>"; };
+		AEE3F9291A90E538004103E6 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AEE8667B1952007900850592 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -81,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEE3F92A1A90E538004103E6 /* Crashlytics.framework in Frameworks */,
 				AEE8667C1952007900850592 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,6 +155,7 @@
 				AE936687194D149000C30EB3 /* MyExplosion.sks */,
 				AE936688194D149000C30EB3 /* MyParticle.sks */,
 				AE936689194D149000C30EB3 /* OptionsScene.swift */,
+				AEE3F9291A90E538004103E6 /* Crashlytics.framework */,
 				AE93668A194D149000C30EB3 /* smallExplosion.sks */,
 				AE93668B194D149000C30EB3 /* Space Platypus Swift-Bridging-Header.h */,
 				AE93668C194D149000C30EB3 /* spark.png */,
@@ -174,6 +178,7 @@
 				AE74DA0A194D13FC007A1EED /* Sources */,
 				AE74DA0B194D13FC007A1EED /* Frameworks */,
 				AE74DA0C194D13FC007A1EED /* Resources */,
+				AEE3F9281A90E509004103E6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -273,6 +278,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AEE3F9281A90E509004103E6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 1c6d125161cfd6155af441bc83d21a64632d815c 0bd63c3e7bccadb5a03117ce104a04e0040a7858af6c8bc5824aed3b65726fbd";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AE74DA0A194D13FC007A1EED /* Sources */ = {
@@ -407,6 +428,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Space",
+					Platypus,
+				);
 				INFOPLIST_FILE = "Space Platypus/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
@@ -423,6 +449,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Space",
+					Platypus,
+				);
 				INFOPLIST_FILE = "Space Platypus/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
