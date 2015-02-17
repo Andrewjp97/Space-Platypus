@@ -35,7 +35,7 @@ class CustomizeScene: SKScene {
     *  The designated initializer for a customize scene: recursize: creates as many children as necessary to hold all the platypus types passed in and links them together
     *
     *  @param CGSize            The size of the scene
-    *  @param kPlatypusColor[]  An array of platypus colors
+    *  @param [kPlatypusColor]  An array of platypus colors
     *  @param CustomizeScene?   The scenes parrent if it has one
     *
     *  @return Void
