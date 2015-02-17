@@ -54,7 +54,8 @@ enum kPlatypusColor: Int {
         kPlatypusColorElf,
         kPlatypusColorChirstmasTree,
         kPlatypusColorRaindeer,
-        kPlatypusColorFire
+        kPlatypusColorFire,
+        kPlatypusColorZombie
     }
 
 /**
@@ -90,6 +91,8 @@ func imageNameForPlatypusColor(color: kPlatypusColor) -> String {
         return "raindeerPlatypus"
     case .kPlatypusColorFire:
         return "firePlatypus"
+    case .kPlatypusColorZombie:
+        return "zombieHull"
     }
 
 }
@@ -127,6 +130,8 @@ func stringForPlatypusType(type: kPlatypusColor) -> String {
         return "raindeer"
     case .kPlatypusColorFire:
         return "fire"
+    case .kPlatypusColorZombie:
+        return "zombie"
     }
 }
 
@@ -202,6 +207,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 platypusColor = .kPlatypusColorFire
             case "raindeer":
                 platypusColor = .kPlatypusColorRaindeer
+            case "zombie":
+                platypusColor = .kPlatypusColorZombie
             default:
                 platypusColor = .kPlatypusColorDefault
             }

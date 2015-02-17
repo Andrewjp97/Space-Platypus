@@ -118,7 +118,7 @@ class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDel
                 platypusTypes: [.kPlatypusColorDefault, .kPlatypusColorRed, .kPlatypusColorYellow,
                     .kPlatypusColorGreen, .kPlatypusColorPurple, .kPlatypusColorPink,
                     .kPlatypusColorDareDevil, .kPlatypusColorSanta, .kPlatypusColorElf,
-                    .kPlatypusColorChirstmasTree, .kPlatypusColorRaindeer, .kPlatypusColorFire])
+                    .kPlatypusColorChirstmasTree, .kPlatypusColorRaindeer, .kPlatypusColorFire, .kPlatypusColorZombie])
             
             let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
             self.view?.presentScene(scene, transition: doors)
