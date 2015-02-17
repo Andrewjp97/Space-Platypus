@@ -620,6 +620,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
     *  @return Void
     */
     func gameOver() {
+        
         var point: CGPoint
         if let pointTwo = self.childNodeWithName("PlatypusBody")?.position {
             point = pointTwo
@@ -634,7 +635,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, TimerDelegate {
         self.stars.advanceSimulationTime(6.0)
         let path = NSBundle.mainBundle().pathForResource("MyExplosion", ofType: "sks")
         let node = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as SKEmitterNode
-        node.position = point
+        node.position = point 
         
         self.addChild(node)
 
