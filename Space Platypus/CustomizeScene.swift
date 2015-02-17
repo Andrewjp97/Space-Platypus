@@ -111,7 +111,10 @@ class CustomizeScene: SKScene {
         
         if self.child != nil {
             var node = SKSpriteNode(imageNamed: "rightArrow")
-            node.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 50)
+            node.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 80)
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                node.position = CGPointMake(CGRectGetMidX(self.frame) + 100, 300)
+            }
             node.name = "rightArrow"
             rightArrow = node
             
@@ -119,7 +122,10 @@ class CustomizeScene: SKScene {
         
         if self.parentScene != nil {
             var node = SKSpriteNode(imageNamed: "leftArrow")
-            node.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 50)
+            node.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 80)
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                node.position = CGPointMake(CGRectGetMidX(self.frame) - 100, 300)
+            }
             node.name = "leftArrow"
             leftArrow = node
         }
@@ -162,6 +168,9 @@ class CustomizeScene: SKScene {
         node.fontColor = SKColor.whiteColor()
         node.fontSize = 24
         node.position = CGPointMake(10 + (0.5 * node.frame.size.width), CGRectGetMaxY(self.frame) - 20 - (0.5 * node.frame.size.height))
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            node.position = CGPointMake(20 + (0.5 * node.frame.size.width), CGRectGetMaxY(self.frame) - 40 - (0.5 * node.frame.size.height))
+        }
         self.addChild(node)
 
     }
