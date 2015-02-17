@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Andrew Paterson. All rights reserved.
 //
 
-
+import Crashlytics
 import UIKit
 import SpriteKit
 import GameKit
@@ -161,7 +161,7 @@ var gameCenterEnabled: Bool = true {
 }
 
 
-import Crashlytics
+//import Crashlytics
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -217,7 +217,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         // Override point for customization after application launch.
-        Crashlytics.startWithAPIKey("1c6d125161cfd6155af441bc83d21a64632d815c")
+       Crashlytics.startWithAPIKey("1c6d125161cfd6155af441bc83d21a64632d815c")
         return true
     }
 

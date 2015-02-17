@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE1519621A937D880045C227 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1519611A937D880045C227 /* iAd.framework */; };
+		AE1519641A937F7D0045C227 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1519631A937F7D0045C227 /* Crashlytics.framework */; };
 		AE25070C1956583A0043A045 /* PlatypusNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE25070B1956583A0043A045 /* PlatypusNode.swift */; };
 		AE25070E19565EF80043A045 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE25070D19565EF80043A045 /* Timer.swift */; };
 		AE74DA2B194D13FC007A1EED /* Space_PlatypusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE74DA2A194D13FC007A1EED /* Space_PlatypusTests.swift */; };
@@ -29,7 +31,6 @@
 		AE9366A0194D149000C30EB3 /* Stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668E194D149000C30EB3 /* Stars.sks */; };
 		AE9366A1194D149000C30EB3 /* tail.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE93668F194D149000C30EB3 /* tail.sks */; };
 		AE9366A2194D149000C30EB3 /* WelcomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE936690194D149000C30EB3 /* WelcomeScene.swift */; };
-		AEE3F92A1A90E538004103E6 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE3F9291A90E538004103E6 /* Crashlytics.framework */; };
 		AEE8667C1952007900850592 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE8667B1952007900850592 /* GameKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE1519611A937D880045C227 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		AE1519631A937F7D0045C227 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AE1D94CC1951D10700FD5887 /* Random.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Random.playground; sourceTree = "<group>"; };
 		AE25070B1956583A0043A045 /* PlatypusNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatypusNode.swift; sourceTree = "<group>"; };
 		AE25070D19565EF80043A045 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -74,7 +77,6 @@
 		AE93668E194D149000C30EB3 /* Stars.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Stars.sks; sourceTree = "<group>"; };
 		AE93668F194D149000C30EB3 /* tail.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = tail.sks; sourceTree = "<group>"; };
 		AE936690194D149000C30EB3 /* WelcomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScene.swift; sourceTree = "<group>"; };
-		AEE3F9291A90E538004103E6 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AEE8667B1952007900850592 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -83,7 +85,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEE3F92A1A90E538004103E6 /* Crashlytics.framework in Frameworks */,
+				AE1519621A937D880045C227 /* iAd.framework in Frameworks */,
+				AE1519641A937F7D0045C227 /* Crashlytics.framework in Frameworks */,
 				AEE8667C1952007900850592 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -101,6 +104,8 @@
 		AE74DA05194D13FC007A1EED = {
 			isa = PBXGroup;
 			children = (
+				AE1519631A937F7D0045C227 /* Crashlytics.framework */,
+				AE1519611A937D880045C227 /* iAd.framework */,
 				AE87A00019562665003F15BD /* trees.sks */,
 				AE87A00119562665003F15BD /* spark.png */,
 				AEE8667B1952007900850592 /* GameKit.framework */,
@@ -155,7 +160,6 @@
 				AE936687194D149000C30EB3 /* MyExplosion.sks */,
 				AE936688194D149000C30EB3 /* MyParticle.sks */,
 				AE936689194D149000C30EB3 /* OptionsScene.swift */,
-				AEE3F9291A90E538004103E6 /* Crashlytics.framework */,
 				AE93668A194D149000C30EB3 /* smallExplosion.sks */,
 				AE93668B194D149000C30EB3 /* Space Platypus Swift-Bridging-Header.h */,
 				AE93668C194D149000C30EB3 /* spark.png */,
@@ -376,7 +380,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -413,7 +417,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				METAL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -432,8 +436,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Space",
 					Platypus,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Space Platypus/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -453,8 +459,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Space",
 					Platypus,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Space Platypus/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

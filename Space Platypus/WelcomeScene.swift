@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameKit
+import iAd
 
 /**
 *  The enumeration for the different menu item types
@@ -52,68 +53,78 @@ func randomNumberFunction(max: Double) -> Double {
 }
 
 class WelcomeScene: SKScene, SKPhysicsContactDelegate, GKGameCenterControllerDelegate {
-
+    
     var contentCreated: Bool = false
-
+    
+   
+    
     override init(size: CGSize) {
         super.init(size: size)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
 
+    
+    
+    
     override func didMoveToView(view: SKView) {
-
+        
         if !contentCreated {
-
+            
             self.createSceneContent()
             contentCreated = true
-
+            
             UIApplication.sharedApplication().statusBarStyle = .LightContent
             self.view?.userInteractionEnabled = true
-
+            
             self.physicsWorld.contactDelegate = self
-
+            
         }
-
-  }
+        
+        // Prepare banner Ad
+        
+        
+        
+    }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
         let touch = touches.anyObject() as UITouch
         let point = touch.locationInNode(self)
-
+        
         let menuItemType = whatMenuItemTypeIsAtPoint(point)
-
+        
         switch menuItemType {
-
-            case .kMenuItemTypePlay:
-                let helloNode = self.childNodeWithName("HelloNode")
-                if helloNode != nil {
-                    helloNode?.name = nil
-                    let zoom = SKAction.scaleTo(0.05, duration: 0.5)
-                    let fade = SKAction.fadeOutWithDuration(0.5)
-                    let remove = SKAction.removeFromParent()
-                    let sequence = SKAction.sequence([zoom, fade, remove])
-                    helloNode?.runAction(sequence, completion: ({
-                        let scene = GameScene(size: self.size)
-                        let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
-                        self.view?.presentScene(scene, transition: doors)
-                        }))
-                }
-            case .kMenuItemTypeCustomize:
-                let scene = CustomizeScene(size: self.size,
-                    platypusTypes: [.kPlatypusColorDefault, .kPlatypusColorRed, .kPlatypusColorYellow,
-                                    .kPlatypusColorGreen, .kPlatypusColorPurple, .kPlatypusColorPink,
-                                    .kPlatypusColorDareDevil, .kPlatypusColorSanta, .kPlatypusColorElf,
-                                    .kPlatypusColorChirstmasTree, .kPlatypusColorRaindeer, .kPlatypusColorFire])
-                
-                let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
-                self.view?.presentScene(scene, transition: doors)
-            case .kMenuItemTypeScores:
-                self.showLeaderboard()
-            case .kMenuItemTypeAchievements:
+            
+        case .kMenuItemTypePlay:
+            let helloNode = self.childNodeWithName("HelloNode")
+            if helloNode != nil {
+                helloNode?.name = nil
+                let zoom = SKAction.scaleTo(0.05, duration: 0.5)
+                let fade = SKAction.fadeOutWithDuration(0.5)
+                let remove = SKAction.removeFromParent()
+                let sequence = SKAction.sequence([zoom, fade, remove])
+                helloNode?.runAction(sequence, completion: ({
+                    let scene = GameScene(size: self.size)
+                    let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
+                    self.view?.presentScene(scene, transition: doors)
+                }))
+            }
+        case .kMenuItemTypeCustomize:
+            let scene = CustomizeScene(size: self.size,
+                platypusTypes: [.kPlatypusColorDefault, .kPlatypusColorRed, .kPlatypusColorYellow,
+                    .kPlatypusColorGreen, .kPlatypusColorPurple, .kPlatypusColorPink,
+                    .kPlatypusColorDareDevil, .kPlatypusColorSanta, .kPlatypusColorElf,
+                    .kPlatypusColorChirstmasTree, .kPlatypusColorRaindeer, .kPlatypusColorFire])
+            
+            let doors = SKTransition.doorsOpenVerticalWithDuration(0.5)
+            self.view?.presentScene(scene, transition: doors)
+        case .kMenuItemTypeScores:
+            self.showLeaderboard()
+        case .kMenuItemTypeAchievements:
                 self.showAchievements()
             case .kMenuItemTypeOptions:
                 let scene = OptionsScene(size: self.size)

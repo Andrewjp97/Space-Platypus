@@ -5,13 +5,16 @@
 //  Created by Andrew Paterson on 6/4/14.
 //  Copyright (c) 2014 Andrew Paterson. All rights reserved.
 //
-
+import iAd
 import UIKit
 import SpriteKit
 import GameKit
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, ADBannerViewDelegate {
 
+    var iAdBanner = ADBannerView()
+    var bannerVisible = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if gameCenterEnabled {
@@ -19,6 +22,47 @@ class GameViewController: UIViewController {
         }
     }
 
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        if(bannerVisible == false) {
+            
+            // Add banner Ad to the view
+            if(iAdBanner.superview == nil) {
+                self.view?.addSubview(iAdBanner)
+            }
+            
+            // Move banner into visible screen frame:
+            UIView.beginAnimations("iAdBannerShow", context: nil)
+            banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height)
+            UIView.commitAnimations()
+            
+            bannerVisible = true
+        }
+        
+    }
+    
+    // Hide banner, if Ad is not loaded.
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        if(bannerVisible == true) {
+            // Move banner below screen frame:
+            UIView.beginAnimations("iAdBannerHide", context: nil)
+            banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height)
+            UIView.commitAnimations()
+            bannerVisible = false
+        }
+        
+    }
+    
+    func bannerViewActionDidFinish(banner: ADBannerView!) {
+        let view = self.view as SKView
+        view.presentScene(WelcomeScene(size: self.view.frame.size))
+        if let height = self.view?.frame.size.height {
+            if let width = self.view?.frame.size.width {
+                banner.frame = CGRectMake(0, height, width, 50)
+                banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height)
+            }
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
 
         let scene = WelcomeScene(size: self.view.frame.size)
@@ -33,6 +77,14 @@ class GameViewController: UIViewController {
         scene.scaleMode = .AspectFill
 
         skView.presentScene(scene)
+        
+        if let height = self.view?.frame.size.height {
+            if let width = self.view?.frame.size.width {
+                iAdBanner.frame = CGRectMake(0, height, width, 50)
+                iAdBanner.delegate = self
+                bannerVisible = false
+            }
+        }
 
     }
 
